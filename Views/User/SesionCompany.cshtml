@@ -1,0 +1,9 @@
+﻿@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("UploadCompanyDetails", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="file" name="file" />
+    <input type="submit" value="OK" class="btn btn-primary active" />
+}
