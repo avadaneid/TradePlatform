@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Windows.Forms;
 using FileProcessing;
+using EntityFramework;
 
 namespace TradingPlatform.Controllers
 {
@@ -20,6 +21,12 @@ namespace TradingPlatform.Controllers
         {
             username = lm.UserName;
             password = lm.Password;
+
+            IEnumerable<CompanyFinancialDetails> co = Context.CompanyFinancialDetails(username);
+            Company company = Context.FindCompany(lm.UserName);
+
+            ViewBag.CFD_List = co;
+            ViewBag.Company = company;
             return View();
         }
 
@@ -42,5 +49,7 @@ namespace TradingPlatform.Controllers
 
             return RedirectToAction("SesionCompany", new LogInModel { UserName = username.ToString() });
         }
+
+       
     }
 }

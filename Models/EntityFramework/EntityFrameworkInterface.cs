@@ -39,6 +39,7 @@ namespace EntityFramework
                .HasKey(k => k.CUI)
                .HasOptional(s => s.CompanyFinancialDetails)
                .WithRequired(d => d.Company);
+               
 
         }
 
@@ -133,7 +134,7 @@ namespace EntityFramework
             {
                 try
                 {
-                    Company co = Context.Find(username);                  
+                    Company co = Context.FindCompany(username);                  
 
                     foreach (CompanyFinancialDetails s in c)
                     {
@@ -158,7 +159,7 @@ namespace EntityFramework
         }
         
 
-        public static Company Find(string username)
+        public static Company FindCompany(string username)
         {
             Company co;
            
@@ -170,6 +171,22 @@ namespace EntityFramework
             }
 
             return co;
+        }
+
+
+
+        public static List<CompanyFinancialDetails> CompanyFinancialDetails(string username)
+        {
+            var cui = FindCompany(username).CUI;
+            List<CompanyFinancialDetails> q;
+
+            using (Connect a = new Connect())
+            {
+                q = a.CompanyFinancialDetails.Where(P => P.CUI == cui).ToList<CompanyFinancialDetails>();
+            }
+
+            return q;
+
         }
 
     }

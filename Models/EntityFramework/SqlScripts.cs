@@ -11,7 +11,8 @@ namespace EntityFramework
         public static void DocumentInsert(Connect a,Company co,CompanyFinancialDetails cfd)
         {
             a.Database.ExecuteSqlCommand(@"INSERT INTO [dbo].[CompanyFinancialDetails]
-            ([Company_CUI]
+            ([Company_CUI],
+            [CUI]
            ,[Quarter]
            ,[TotalTangibleAssets]
            ,[Shares]
@@ -53,7 +54,7 @@ namespace EntityFramework
             values
            
            ({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26},{27},{28},{29},{30},
-		   {31},{32},{33},{34},{35},{36},{37})", co.CUI, cfd.Quarter, cfd.TotalTangibleAssets, cfd.Shares, cfd.TotalCurrentAssets, cfd.Inventories, cfd.Receivables,
+		   {31},{32},{33},{34},{35},{36},{37},{38})",co.CUI, co.CUI, cfd.Quarter, cfd.TotalTangibleAssets, cfd.Shares, cfd.TotalCurrentAssets, cfd.Inventories, cfd.Receivables,
 
            cfd.Cash, cfd.ShortTermInvestments, cfd.Prepayments, cfd.TotalOneYearDebts, cfd.FinancialOneYearDebts, cfd.CommercialOneYearDebts,
 

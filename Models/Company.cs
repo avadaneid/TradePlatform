@@ -34,6 +34,7 @@ namespace Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        public decimal? CUI { get; set; }
         public decimal? Year { get; set; }
         public decimal? Quarter { get; set; }
         public decimal? TotalTangibleAssets { get; set; } 
@@ -70,7 +71,7 @@ namespace Models
         public decimal? TotalExpenses { get; set; }
         public decimal? GrossProfit { get; set; }
         public decimal? NetProfit { get; set; }
-        public decimal? NumberOfEmployees { get; set; }      
+        public decimal? NumberOfEmployees { get; set; } 
         public virtual Company Company { get; set; }
 
     }
