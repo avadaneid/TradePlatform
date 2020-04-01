@@ -32,7 +32,7 @@ namespace TradingPlatform.Controllers
 
         public ActionResult SesionIndividual(LogInModel lm)
         {
-            return View();
+            return View(Context.FindListedCompanies(lm.UserName));
         }
 
         [HttpPost]
@@ -48,8 +48,22 @@ namespace TradingPlatform.Controllers
             FileProcessing.FileProcessing.Read(username.ToString());
 
             return RedirectToAction("SesionCompany", new LogInModel { UserName = username.ToString() });
+            
         }
 
-       
+        [HttpPost]
+        public ActionResult ListCompany(Listing l)
+        {
+            Context.UpdateCompanyForListing(username, l);
+            return RedirectToAction("SesionCompany", new LogInModel { UserName = username.ToString() });           
+        }
+
+
+        public ActionResult CompanyDetails(Company c)
+        {
+            MessageBox.Show($"{c.CUI}");
+            return View();
+        }
+
     }
 }

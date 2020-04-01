@@ -7,7 +7,7 @@ using Models;
 using EntityFramework;
 using System.Linq;
 using System.Data.Entity.Core.Mapping;
-
+using Microsoft.Ajax.Utilities;
 
 namespace EntityFramework
 {
@@ -65,11 +65,8 @@ namespace EntityFramework
 
                         InsertEntity(account, connect);
 
-                        //connect.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Companies] ON;");
-
                         connect.SaveChanges();
 
-                        //connect.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Companies] ON;");
                         transaction.Commit();
                     }
 
@@ -187,6 +184,37 @@ namespace EntityFramework
 
             return q;
 
+        }
+
+        public static void UpdateCompanyForListing(string username, Listing lst)
+        {
+            using (Connect o = new Connect())
+            {
+                var cui = FindCompany(username).CUI;
+                CompanyFinancialDetails cfd = CompanyFinancialDetails(username).FirstOrDefault(l => l.TotalEquity > 0);              
+                var resultQ = o.Companies.Where(i => i.CUI == cui);
+                foreach (Company result in resultQ)
+                {
+                    result.SharesCount = lst.NumberOfShares;
+                    result.IsListed = true;
+                    result.SharePrice = (cfd.TotalEquity * lst.Percent) / lst.NumberOfShares;
+                    result.SharesOnTheMarket = lst.NumberOfShares;
+                }
+                o.SaveChanges();
+            }
+        }
+
+        public static List<Company> FindListedCompanies(string username)
+        {
+            List<Company> lst;
+            using (Connect a = new Connect())
+            {
+                lst = a.Companies.Where(o => o.IsListed == true).ToList<Company>();
+
+
+            }
+            List<Company> p = lst.DistinctBy(x => x.CUI).ToList();
+            return p;
         }
 
     }

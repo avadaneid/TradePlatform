@@ -18,5 +18,4 @@ namespace Models
         public string UserName { get; set; }
         public virtual Account Account { get; set; }
     }
-
 }

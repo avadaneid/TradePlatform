@@ -70,8 +70,7 @@ namespace TradingPlatform.Controllers
 
         [HttpPost]
         public ActionResult InsertUser(Account sign)
-        {
-            
+        {          
             Context.InsertLogIn(sign);
             return RedirectToAction("LogIn"); 
         }

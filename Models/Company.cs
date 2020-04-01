@@ -22,7 +22,11 @@ namespace Models
         public int? SharesCount { get; set; }
         
         public decimal? SharePrice { get; set; }
-       
+
+        public bool IsListed { get; set; }
+
+        public int SharesOnTheMarket { get; set; }
+
         public virtual Account Account { get; set; }
 
         public virtual CompanyFinancialDetails CompanyFinancialDetails { get; set; }
@@ -73,6 +77,13 @@ namespace Models
         public decimal? NetProfit { get; set; }
         public decimal? NumberOfEmployees { get; set; } 
         public virtual Company Company { get; set; }
+
+    }
+
+    public class Listing
+    {
+        public decimal Percent { get; set; }
+        public int NumberOfShares { get; set; }
 
     }
     

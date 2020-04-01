@@ -151,6 +151,18 @@
     <Compile Include="Migrations\202003291419180_affr.designer.cs">
       <DependentUpon>202003291419180_affr.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004011111049_Listing.cs" />
+    <Compile Include="Migrations\202004011111049_Listing.designer.cs">
+      <DependentUpon>202004011111049_Listing.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004011155505_L.cs" />
+    <Compile Include="Migrations\202004011155505_L.designer.cs">
+      <DependentUpon>202004011155505_L.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004011308505_p.cs" />
+    <Compile Include="Migrations\202004011308505_p.designer.cs">
+      <DependentUpon>202004011308505_p.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\EntityFramework\EntityFrameworkInterface.cs" />
@@ -304,6 +316,8 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Shared\CompanyListing.cshtml" />
+    <Content Include="Views\User\CompanyDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\" />
@@ -324,6 +338,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003291419180_affr.resx">
       <DependentUpon>202003291419180_affr.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004011111049_Listing.resx">
+      <DependentUpon>202004011111049_Listing.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004011155505_L.resx">
+      <DependentUpon>202004011155505_L.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004011308505_p.resx">
+      <DependentUpon>202004011308505_p.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
