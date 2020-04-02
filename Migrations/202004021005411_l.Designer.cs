@@ -7,13 +7,13 @@ namespace TradingPlatform.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.0")]
-    public sealed partial class L : IMigrationMetadata
+    public sealed partial class l : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(L));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(l));
         
         string IMigrationMetadata.Id
         {
-            get { return "202004011155505_L"; }
+            get { return "202004021005411_l"; }
         }
         
         string IMigrationMetadata.Source

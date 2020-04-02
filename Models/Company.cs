@@ -21,11 +21,15 @@ namespace Models
 
         public int? SharesCount { get; set; }
         
-        public decimal? SharePrice { get; set; }
+        public decimal SharePrice { get; set; }
+
+        public decimal NominalSharePrice { get; set; }
 
         public bool IsListed { get; set; }
 
         public int SharesOnTheMarket { get; set; }
+
+        public DateTime? DateBeginTransaction { get; set; }
 
         public virtual Account Account { get; set; }
 
@@ -58,7 +62,7 @@ namespace Models
         public decimal? FinancialLongTerDebts { get; set; }
         public decimal? RevenueInAdvance { get; set; }
         public decimal? SubscribedCapital { get; set; }
-        public decimal? TotalEquity { get; set; }
+        public decimal TotalEquity { get; set; }
         public decimal? TotalDebts { get; set; }
         public decimal? NetTurnover { get; set; }
         public decimal? TotalOperatingIncome { get; set; }
@@ -74,17 +78,33 @@ namespace Models
         public decimal? TotalRevenues { get; set; }
         public decimal? TotalExpenses { get; set; }
         public decimal? GrossProfit { get; set; }
-        public decimal? NetProfit { get; set; }
-        public decimal? NumberOfEmployees { get; set; } 
+        public decimal NetProfit { get; set; }
+        public decimal? NumberOfEmployees { get; set; }
+        public DateTime CreatedOn { get; set; }
         public virtual Company Company { get; set; }
 
     }
 
     public class Listing
     {
+        [Key]
+        public decimal Cui { get; set; }
         public decimal Percent { get; set; }
         public int NumberOfShares { get; set; }
 
     }
+
+    public class CompanyFinancialIndicators
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public long Cui { get; set; }
+        public decimal PriceEarningsRatio { get; set; }
+        public decimal Capitalisation { get; set; }
+        public decimal PriceBookValue { get; set; }
+        public decimal EarningPerShare { get; set; }
+        public decimal? DividendYield { get; set; }
+        public decimal? Dividend { get; set; }
+    } 
     
 }

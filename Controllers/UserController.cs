@@ -22,7 +22,7 @@ namespace TradingPlatform.Controllers
             username = lm.UserName;
             password = lm.Password;
 
-            IEnumerable<CompanyFinancialDetails> co = Context.CompanyFinancialDetails(username);
+            IEnumerable<CompanyFinancialDetails> co = Context.FindCompanyFinancialDetails(username);
             Company company = Context.FindCompany(lm.UserName);
 
             ViewBag.CFD_List = co;
@@ -61,9 +61,13 @@ namespace TradingPlatform.Controllers
 
         public ActionResult CompanyDetails(Company c)
         {
-            MessageBox.Show($"{c.CUI}");
-            return View();
+            Company company = Context.FindCompany(c.CUI);
+            ViewBag.ASK = Context.FindASK(c.CUI);
+            ViewBag.BID = Context.FindBID(c.CUI);
+
+            return View(company);
         }
 
+        
     }
 }

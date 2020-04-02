@@ -155,13 +155,33 @@
     <Compile Include="Migrations\202004011111049_Listing.designer.cs">
       <DependentUpon>202004011111049_Listing.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202004011155505_L.cs" />
-    <Compile Include="Migrations\202004011155505_L.designer.cs">
-      <DependentUpon>202004011155505_L.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\202004011308505_p.cs" />
     <Compile Include="Migrations\202004011308505_p.designer.cs">
       <DependentUpon>202004011308505_p.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004020946039_T.cs" />
+    <Compile Include="Migrations\202004020946039_T.designer.cs">
+      <DependentUpon>202004020946039_T.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004021005411_l.cs" />
+    <Compile Include="Migrations\202004021005411_l.designer.cs">
+      <DependentUpon>202004021005411_l.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004021029288_cui_generated.cs" />
+    <Compile Include="Migrations\202004021029288_cui_generated.designer.cs">
+      <DependentUpon>202004021029288_cui_generated.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004021145557_nominalSharePrice.cs" />
+    <Compile Include="Migrations\202004021145557_nominalSharePrice.designer.cs">
+      <DependentUpon>202004021145557_nominalSharePrice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004021342028_mm.cs" />
+    <Compile Include="Migrations\202004021342028_mm.designer.cs">
+      <DependentUpon>202004021342028_mm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004021359526_lk.cs" />
+    <Compile Include="Migrations\202004021359526_lk.designer.cs">
+      <DependentUpon>202004021359526_lk.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Company.cs" />
@@ -170,6 +190,7 @@
     <Compile Include="Models\Individual.cs" />
     <Compile Include="Models\LogInModel.cs" />
     <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\Transactions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -342,11 +363,26 @@
     <EmbeddedResource Include="Migrations\202004011111049_Listing.resx">
       <DependentUpon>202004011111049_Listing.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004011155505_L.resx">
-      <DependentUpon>202004011155505_L.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004011308505_p.resx">
       <DependentUpon>202004011308505_p.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004020946039_T.resx">
+      <DependentUpon>202004020946039_T.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004021005411_l.resx">
+      <DependentUpon>202004021005411_l.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004021029288_cui_generated.resx">
+      <DependentUpon>202004021029288_cui_generated.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004021145557_nominalSharePrice.resx">
+      <DependentUpon>202004021145557_nominalSharePrice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004021342028_mm.resx">
+      <DependentUpon>202004021342028_mm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004021359526_lk.resx">
+      <DependentUpon>202004021359526_lk.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

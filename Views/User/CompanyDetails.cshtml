@@ -2,9 +2,48 @@
     Layout = null;
 }
 
-@{
-    ViewBag.Title = "CompanyDetails";
-}
+@using Models;
 
-<h2>CompanyDetails</h2>
+@{
+    var ASK = ViewBag.ASK as IEnumerable<Models.ASK>;
+    var BID = ViewBag.BID as IEnumerable<Models.BID>;
+} 
+
+
+@model Models.Company
+
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>
+                        Pret
+                    </td>
+                    <td>
+                        Cantitate
+                    </td>
+                    <td>
+                        Data
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    @foreach (ASK sk in ASK)
+                     {
+                        <td>
+                            @sk.Price
+                        </td>
+                        <td>
+                            @sk.Quantity
+                        </td>
+                        <td>
+                            @sk.CreatedOn
+                        </td>
+                     }
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
 
