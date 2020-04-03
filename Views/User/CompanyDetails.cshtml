@@ -1,4 +1,4 @@
-﻿@{ 
+﻿@{
     Layout = null;
 }
 
@@ -7,43 +7,150 @@
 @{
     var ASK = ViewBag.ASK as IEnumerable<Models.ASK>;
     var BID = ViewBag.BID as IEnumerable<Models.BID>;
-} 
+    var Transaction = ViewBag.Transaction as Transaction;
+}
 
 
 @model Models.Company
 
-    <div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <td>
-                        Pret
-                    </td>
-                    <td>
-                        Cantitate
-                    </td>
-                    <td>
-                        Data
-                    </td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    @foreach (ASK sk in ASK)
-                     {
-                        <td>
-                            @sk.Price
-                        </td>
-                        <td>
-                            @sk.Quantity
-                        </td>
-                        <td>
-                            @sk.CreatedOn
-                        </td>
-                     }
-                </tr>
-            </tbody>
-        </table>
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<script>
+        $(document).ready(function () {
+            $("#bb").click(function () {
+                var Transaction = {
+                    CUI:@Transaction.CUI,
+                    CNP:@Transaction.CNP,
+                    BID: {
+                        CreatedOn:'@DateTime.Today.ToString()',
+                        Price: $("#b_p").val(),
+                        Quantity: $("#b_q").val()
+                    }
+                }
+
+                $.ajax(
+                {
+                    type: "POST",
+                        url: "/User/Order",
+                        data: Transaction,
+                    cache: false,
+                        async: true,
+                     dataType: "json",
+                    success: function (data) {
+                        alert(data);
+                    },
+
+                });
+
+            });
+        })
+</script>
+
+<html>
+
+<body>
+    <div style="padding-left:10%">
+
+        <div style="width:40%;float:left">
+            <div style="width:50%;float:left;padding-top:22px">
+                <table class="table table-striped table-bordered table-sm">
+                    <thead class="thead-dark" style="text-align:center">
+                        <tr>
+                            <th>
+                                Pret
+                            </th>
+                            <th>
+                                Cantitate
+                            </th>
+                            <th>
+                                Data
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody style="text-align:center">
+                        <tr>
+                            @foreach (BID bd in BID)
+                            {
+                                <td>
+                                    @bd.Price
+                                </td>
+                                <td>
+                                    @bd.Quantity
+                                </td>
+                                <td>
+                                    @bd.CreatedOn
+                                </td>
+                            }
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="width:50%;float:left;padding-left:1.5%">
+                Price
+                <input type="text" id="b_p" class="form-control" style="width:50%" />
+                Quantity
+                <input type="text" id="b_q" class="form-control" style="width:50%" />
+                <button type="button" id="bb" style="float:left" value="Details" class="btn btn-primary">
+                    BUY
+                </button>
+
+            </div>
+        </div>
+
+        <div style="float:left;width:40%">
+            <div style="float:left;width:50%;padding-top:22px">
+                <table class="table table-striped table-bordered table-sm">
+                    <thead class="thead-dark" style="text-align:center">
+                        <tr>
+                            <th>
+                                Pret
+                            </th>
+                            <th>
+                                Cantitate
+                            </th>
+                            <th>
+                                Data
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody style="text-align:center">
+                        <tr>
+                            @foreach (ASK sk in ASK)
+                            {
+                                <td>
+                                    @sk.Price
+                                </td>
+                                <td>
+                                    @sk.Quantity
+                                </td>
+                                <td>
+                                    @sk.CreatedOn
+                                </td>
+                            }
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="float:left;width:50%;padding-left:1.5%">
+
+                <a2>Price</a2>
+                <input type="text" id="s_p" class="form-control" style="width:50%" />
+                <a2>Quantity</a2>
+                <input type="text" id="s_q" class="form-control" style="width:50%" />
+                <button type="button" value="Details" class="btn btn-primary"
+                        onclick="location.href='@Url.Action("Order","User",Transaction)'">
+                    SELL
+                </button>
+
+            </div>
+        </div>
     </div>
+
+</body>
+</html>
 
 

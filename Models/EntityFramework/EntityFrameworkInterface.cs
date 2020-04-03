@@ -276,7 +276,7 @@ namespace EntityFramework
             }
         }
 
-        public static List<Company> FindListedCompanies(string username)
+        public static List<Company> FindListedCompanies()
         {
             List<Company> lst;
             using (Connect a = new Connect())
@@ -323,6 +323,17 @@ namespace EntityFramework
             }
 
             return bid;
+        }
+
+        public static Individual FindIndividual(string username)
+        {
+            List<Individual> l;
+            using (Connect c = new Connect())
+            {
+               l = c.Individuals.Where(ind => ind.UserName == username).ToList();
+            }
+            Individual i = l.DistinctBy(m => m.UserName == username).FirstOrDefault();
+            return i;
         }
 
     }

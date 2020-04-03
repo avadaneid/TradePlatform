@@ -33,4 +33,14 @@ namespace Models
         public decimal Price { get; set; }
         public int Quantity { get; set; }
     }
+
+    public class Transaction
+    {
+        public ASK ASK { get; set; }
+        public BID BID { get; set; }
+        public long CUI { get; set; }
+        public long CNP { get; set; }
+
+    }
+
 }

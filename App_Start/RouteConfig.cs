@@ -52,6 +52,12 @@ namespace TradingPlatform
              defaults: new { controller = "User", action = "UploadCompanyDetails" }
              );
 
+            routes.MapRoute(
+            name: "Transaction",
+            url: "{User}/{Order}",
+            defaults: new { controller = "User", action = "Order", id = UrlParameter.Optional }
+            );
+
         }
     }
 }

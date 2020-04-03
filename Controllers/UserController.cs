@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Windows.Forms;
 using FileProcessing;
 using EntityFramework;
+using Newtonsoft.Json;
 
 namespace TradingPlatform.Controllers
 {
@@ -32,7 +33,12 @@ namespace TradingPlatform.Controllers
 
         public ActionResult SesionIndividual(LogInModel lm)
         {
-            return View(Context.FindListedCompanies(lm.UserName));
+            IEnumerable<Company> comp = Context.FindListedCompanies();
+            ViewBag.ListedCompanies = comp;
+
+            Individual individual = Context.FindIndividual(lm.UserName);
+
+            return View(individual);
         }
 
         [HttpPost]
@@ -57,17 +63,20 @@ namespace TradingPlatform.Controllers
             Context.UpdateCompanyForListing(username, l);
             return RedirectToAction("SesionCompany", new LogInModel { UserName = username.ToString() });           
         }
-
-
-        public ActionResult CompanyDetails(Company c)
-        {
-            Company company = Context.FindCompany(c.CUI);
-            ViewBag.ASK = Context.FindASK(c.CUI);
-            ViewBag.BID = Context.FindBID(c.CUI);
-
-            return View(company);
+  
+        public ActionResult CompanyDetails(Transaction t)
+        {    
+            Company company = Context.FindCompany(t.CUI);
+            ViewBag.ASK = Context.FindASK(t.CUI);
+            ViewBag.BID = Context.FindBID(t.CUI);
+            ViewBag.Transaction = t;
+            return View();
         }
-
-        
+      
+        [HttpPost]
+        public void Order(Transaction t)
+        {
+            MessageBox.Show("Works");
+        }
     }
 }
