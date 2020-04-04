@@ -78,6 +78,7 @@ namespace TradingPlatform.Controllers
         public void Order(Transaction t)
         {
             TransactionValidation.ValidateBUY(t);
+            Redirect(Request.UrlReferrer.ToString());
         }
     }
 }

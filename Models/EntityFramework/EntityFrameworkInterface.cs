@@ -27,7 +27,7 @@ namespace EntityFramework
         public DbSet<Listing> Listings { get; set; }
         public DbSet<ASK> Ask { get; set; }
         public DbSet<BID> Bid { get; set; }
-        public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Transactions> Transactions { get; set; }
         public DbSet<Portofolio> Portofolios { get; set; }
            
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -283,12 +283,9 @@ namespace EntityFramework
             List<Company> lst;
             using (Connect a = new Connect())
             {
-                lst = a.Companies.Where(o => o.IsListed == true).ToList<Company>();
-
-
-            }
-            List<Company> p = lst.DistinctBy(x => x.CUI).ToList();
-            return p;
+                lst = a.Companies.Where(o => o.IsListed == true).DistinctBy(x => x.CUI).ToList();
+            }          
+            return lst;
         }
         public static void InsertAskCompany(long cui,Company c)
         {
@@ -388,9 +385,12 @@ namespace EntityFramework
                 .Where(company => company.CUI == bid_p.CUI)
                 .FirstOrDefault<Company>();
                 c.SharePrice = bid_p.Price;
+
                
                 ASK ask = cnt.Ask.Where(p => p.Id == ask_p.Id).FirstOrDefault();
                 BID bid = cnt.Bid.Where(p => p.Id == bid_p.Id).FirstOrDefault();
+
+                ask.Price = bid_p.Price;
 
                 if (ask_p.Quantity > bid_p.Quantity)
                 {
@@ -411,7 +411,7 @@ namespace EntityFramework
                     var remain_bid = bid_p.Quantity - ask_p.Quantity;
                     bid.Quantity = remain_bid;
                     c.Debit += bid_p.Price * bid_p.Quantity;
-                    c.SharesOnInitialIPO -= bid_p.Quantity;
+                    c.SharesOnInitialIPO = 0;
                     cnt.Ask.Remove(ask);
                 }
 
@@ -434,6 +434,8 @@ namespace EntityFramework
 
                 ASK ask = cnt.Ask.Where(p => p.Id == ask_p.Id).FirstOrDefault();
                 BID bid = cnt.Bid.Where(p => p.Id == bid_p.Id).FirstOrDefault();
+
+                ask.Price = ask_p.Price;
 
                 if (ask_p.Quantity > bid_p.Quantity)
                 {

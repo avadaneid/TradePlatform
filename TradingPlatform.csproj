@@ -184,6 +184,10 @@
     <Compile Include="Migrations\202004021359526_lk.designer.cs">
       <DependentUpon>202004021359526_lk.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004041337061_transaction_logic.cs" />
+    <Compile Include="Migrations\202004041337061_transaction_logic.designer.cs">
+      <DependentUpon>202004041337061_transaction_logic.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\EntityFramework\EntityFrameworkInterface.cs" />
@@ -382,6 +386,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004021359526_lk.resx">
       <DependentUpon>202004021359526_lk.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004041337061_transaction_logic.resx">
+      <DependentUpon>202004041337061_transaction_logic.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

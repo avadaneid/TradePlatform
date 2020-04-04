@@ -25,11 +25,16 @@ namespace Validation
             if (bd.Price >= ask.Price)
             {
 
-                    if(ask.IsIPO == true)
-                    {
-                        Context.UpdateCompanyTransaction(bd,ask);
-                    }
+                if (ask.IsIPO == true)
+                {
+                    Context.UpdateCompanyTransaction(bd, ask);
+                }
+                else
+                {
+
                     Context.UpdateIndividualPortfolio(bd, ask);
+                }
+                Order(t);
 
             }
         }
