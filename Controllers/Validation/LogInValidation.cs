@@ -6,8 +6,6 @@ namespace Validation
 {
     public static class LogInValidation
     {
-        //test2
-        //test
         public static bool ValidCredentials { get; set; }
         public static AccountType AccountType { get; set; }
 

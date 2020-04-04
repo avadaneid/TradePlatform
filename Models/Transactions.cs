@@ -31,6 +31,7 @@ namespace Models
         public string CompanyName { get; set; }
         public DateTime CreatedOn { get; set; }
         public decimal Price { get; set; }
+        public bool IsIPO { get; set; }
         public int Quantity { get; set; }
     }
 
@@ -43,4 +44,29 @@ namespace Models
 
     }
 
+    public class Portofolio
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        public long CNP { get; set; }
+        public long CUI { get; set; }
+        public string CompanyName { get; set; }
+        public int Quantity { get; set; }
+        public DateTime CreatedOn { get; set; }
+
+    }
+
+    public class Transactions
+    {
+        
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        public long CNP { get; set; }
+        public long CUI { get; set; }
+        public int Quantity { get; set; }
+        public int Price { get; set; }
+        public DateTime CreatedOn { get; set; }
+    }
 }

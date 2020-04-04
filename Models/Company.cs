@@ -27,7 +27,9 @@ namespace Models
 
         public bool IsListed { get; set; }
 
-        public int SharesOnTheMarket { get; set; }
+        public int SharesOnInitialIPO { get; set; }
+
+        public decimal Debit { get; set; }
 
         public DateTime? DateBeginTransaction { get; set; }
 

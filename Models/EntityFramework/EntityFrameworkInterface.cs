@@ -27,6 +27,8 @@ namespace EntityFramework
         public DbSet<Listing> Listings { get; set; }
         public DbSet<ASK> Ask { get; set; }
         public DbSet<BID> Bid { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Portofolio> Portofolios { get; set; }
            
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -188,7 +190,7 @@ namespace EntityFramework
             return co;
         }
 
-        public static Company UpdateCompany(long cui,DateTime dt)
+        public static Company UpdateCompanyBeginTransactionDate(long cui,DateTime dt)
         {
             Company co;
 
@@ -259,11 +261,11 @@ namespace EntityFramework
                     result.IsListed = true;
                     result.SharePrice = (cfd.TotalEquity * lst.Percent) / lst.NumberOfShares;
                     result.NominalSharePrice = result.SharePrice;
-                    result.SharesOnTheMarket = lst.NumberOfShares;
+                    result.SharesOnInitialIPO = lst.NumberOfShares;
 
-                    UpdateCompany(cui, DateTime.Now);
+                    UpdateCompanyBeginTransactionDate(cui, DateTime.Now);
                     InsertCompanyIndicators(cui, cfd, lst, result);
-                    InsertAsk(cui, result);
+                    InsertAskCompany(cui, result);
 
                     lst.Cui = cui;
                     o.Listings.Add(lst);
@@ -288,7 +290,7 @@ namespace EntityFramework
             List<Company> p = lst.DistinctBy(x => x.CUI).ToList();
             return p;
         }
-        public static void InsertAsk(long cui,Company c)
+        public static void InsertAskCompany(long cui,Company c)
         {
             using(Connect cnt = new Connect())
             {
@@ -296,14 +298,15 @@ namespace EntityFramework
                 ask.CUI = c.CUI;
                 ask.CreatedOn = DateTime.Now;
                 ask.Price = c.NominalSharePrice;
-                ask.Quantity = c.SharesOnTheMarket;
+                ask.Quantity = c.SharesOnInitialIPO;
                 ask.CompanyName = c.CompanyName;
+                ask.IsIPO = true;
                 cnt.Ask.Add(ask);
                 cnt.SaveChanges();
             }
         }
 
-        public static List<ASK> FindASK(long cui)
+        public static List<ASK> FindASKforListing(long cui)
         {
             List<ASK> ask;
             using (Connect a = new Connect())
@@ -314,7 +317,7 @@ namespace EntityFramework
             return ask;
         }
 
-        public static List<BID> FindBID(long cui)
+        public static List<BID> FindBIDforListing(long cui)
         {
             List<BID> bid;
             using (Connect a = new Connect())
@@ -336,5 +339,163 @@ namespace EntityFramework
             return i;
         }
 
+        public static Individual FindIndividual(long cnp)
+        {
+            List<Individual> l;
+            using (Connect c = new Connect())
+            {
+                l = c.Individuals.Where(ind => ind.CNP == cnp).ToList();
+            }
+            Individual i = l.DistinctBy(m => m.CNP == cnp).FirstOrDefault();
+            return i;
+        }
+
+        public static void InsertBID(BID b )
+        {
+            using(Connect a = new Connect())
+            {
+                a.Bid.Add(b);
+                a.SaveChanges();
+            }
+        }
+
+        public static List<BID> OrderOrderedBID(Transaction t)
+        {
+            List<BID> lst;
+            using (Connect cnt = new Connect())
+            {
+                lst = cnt.Bid.OrderByDescending(j => j.Price).ThenBy(m => m.CreatedOn).ToList();
+            }
+            return lst;
+        }
+
+        public static List<ASK> OrderOrderedASK(Transaction t)
+        {
+            List<ASK> lst;
+            using (Connect cnt = new Connect())
+            {
+                lst = cnt.Ask.OrderBy(j => j.Price).ThenBy(m => m.CreatedOn).ToList();
+            }
+            return lst;
+        }
+
+        public static void UpdateCompanyTransaction(BID bid_p,ASK ask_p)
+        {
+
+            using(Connect cnt = new Connect())
+            {
+                Company c = cnt.Companies
+                .Where(company => company.CUI == bid_p.CUI)
+                .FirstOrDefault<Company>();
+                c.SharePrice = bid_p.Price;
+               
+                ASK ask = cnt.Ask.Where(p => p.Id == ask_p.Id).FirstOrDefault();
+                BID bid = cnt.Bid.Where(p => p.Id == bid_p.Id).FirstOrDefault();
+
+                if (ask_p.Quantity > bid_p.Quantity)
+                {
+                    var remain_ask = ask_p.Quantity - bid_p.Quantity;
+                    ask.Quantity = remain_ask;
+                    c.Debit += bid_p.Price * bid_p.Quantity;
+                    c.SharesOnInitialIPO -= bid_p.Quantity;
+                    cnt.Bid.Remove(bid);
+                }else if(ask_p.Quantity == bid_p.Quantity)
+                {
+                    c.Debit += bid_p.Price * bid_p.Quantity;
+                    c.SharesOnInitialIPO -= bid_p.Quantity;
+                    cnt.Ask.Remove(ask);
+                    cnt.Bid.Remove(bid);
+                }
+                else
+                {
+                    var remain_bid = bid_p.Quantity - ask_p.Quantity;
+                    bid.Quantity = remain_bid;
+                    c.Debit += bid_p.Price * bid_p.Quantity;
+                    c.SharesOnInitialIPO -= bid_p.Quantity;
+                    cnt.Ask.Remove(ask);
+                }
+
+
+                UpdatePortfolio(bid_p);
+
+
+                cnt.SaveChanges();
+            }
+
+        }
+
+        public static void UpdateIndividualPortfolio(BID bid_p,ASK ask_p)
+        {
+           
+            using (Connect cnt = new Connect())
+            {
+                Individual i = cnt.Individuals.Where(p => p.CNP == ask_p.CNP).FirstOrDefault();            
+                Portofolio portf = cnt.Portofolios.Where(q => q.CNP == ask_p.CNP && q.CUI == ask_p.CUI).FirstOrDefault();
+
+                ASK ask = cnt.Ask.Where(p => p.Id == ask_p.Id).FirstOrDefault();
+                BID bid = cnt.Bid.Where(p => p.Id == bid_p.Id).FirstOrDefault();
+
+                if (ask_p.Quantity > bid_p.Quantity)
+                {
+                    var remain_ask = ask_p.Quantity - bid_p.Quantity;
+                    ask.Quantity = remain_ask;
+                    i.Debit += bid_p.Price * bid_p.Quantity;
+                    portf.Quantity -= bid_p.Quantity;
+                    cnt.Bid.Remove(bid);
+                }
+                else if (ask_p.Quantity == bid_p.Quantity)
+                {
+                    i.Debit += bid_p.Price * bid_p.Quantity;
+                    portf.Quantity -= bid_p.Quantity;
+                    cnt.Ask.Remove(ask);
+                    cnt.Bid.Remove(bid);
+                }
+                else
+                {
+                    var remain_bid = bid_p.Quantity - ask_p.Quantity;
+                    bid.Quantity = remain_bid;
+                    i.Debit += bid_p.Price * bid_p.Quantity;
+                    portf.Quantity -= bid_p.Quantity;
+                    cnt.Ask.Remove(ask);
+                }
+
+                Company comp = cnt.Companies.Where(c => c.CUI == bid_p.CUI).FirstOrDefault();
+                comp.SharePrice = bid_p.Price;
+                UpdatePortfolio(bid_p);
+                cnt.SaveChanges();
+            }
+
+        }
+
+        public static void UpdatePortfolio(BID b)
+        {
+            using (Connect cnt = new Connect())
+            {
+                Individual i = cnt.Individuals.Where(p => p.CNP == b.CNP).FirstOrDefault();
+                i.Debit -= b.Price * b.Quantity;
+                Portofolio portf = cnt.Portofolios.Where(q => q.CNP == b.CNP && q.CUI == b.CUI).FirstOrDefault();
+                if (portf == null)
+                {
+                    Portofolio portofolio = new Portofolio();
+                    portofolio.CNP = b.CNP;
+                    portofolio.CompanyName = b.CompanyName;
+                    portofolio.CreatedOn = DateTime.Now;
+                    portofolio.CUI = b.CUI;
+                    portofolio.Quantity = b.Quantity;
+                    cnt.Portofolios.Add(portofolio);
+
+                }
+                else if (portf != null)
+                {
+
+                    portf.Quantity += b.Quantity;
+
+                }
+
+                cnt.SaveChanges();
+            }         
+
+        }
+      
     }
 }

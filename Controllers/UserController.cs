@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using FileProcessing;
 using EntityFramework;
 using Newtonsoft.Json;
+using Validation;
 
 namespace TradingPlatform.Controllers
 {
@@ -67,8 +68,8 @@ namespace TradingPlatform.Controllers
         public ActionResult CompanyDetails(Transaction t)
         {    
             Company company = Context.FindCompany(t.CUI);
-            ViewBag.ASK = Context.FindASK(t.CUI);
-            ViewBag.BID = Context.FindBID(t.CUI);
+            ViewBag.ASK = Context.FindASKforListing(t.CUI);
+            ViewBag.BID = Context.FindBIDforListing(t.CUI);
             ViewBag.Transaction = t;
             return View();
         }
@@ -76,7 +77,7 @@ namespace TradingPlatform.Controllers
         [HttpPost]
         public void Order(Transaction t)
         {
-            MessageBox.Show("Works");
+            TransactionValidation.ValidateBUY(t);
         }
     }
 }
