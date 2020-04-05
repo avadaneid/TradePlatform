@@ -63,10 +63,11 @@ namespace Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public long CNP { get; set; }
-        public long CUI { get; set; }
         public int Quantity { get; set; }
-        public int Price { get; set; }
+        public decimal Price { get; set; }
+        public long SellTo { get; set; }
+        public long BuyFrom { get; set; }
+        public bool FromIPO { get; set; }
         public DateTime CreatedOn { get; set; }
     }
 }

@@ -188,6 +188,14 @@
     <Compile Include="Migrations\202004041337061_transaction_logic.designer.cs">
       <DependentUpon>202004041337061_transaction_logic.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004050948354_share.cs" />
+    <Compile Include="Migrations\202004050948354_share.designer.cs">
+      <DependentUpon>202004050948354_share.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004051515176_m.cs" />
+    <Compile Include="Migrations\202004051515176_m.designer.cs">
+      <DependentUpon>202004051515176_m.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\EntityFramework\EntityFrameworkInterface.cs" />
@@ -205,6 +213,8 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Chart.css" />
+    <Content Include="Content\Chart.min.css" />
     <Content Include="Content\StyleSignUp.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -213,6 +223,8 @@
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Chart.js" />
+    <Content Include="Scripts\Chart.min.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
@@ -389,6 +401,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004041337061_transaction_logic.resx">
       <DependentUpon>202004041337061_transaction_logic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004050948354_share.resx">
+      <DependentUpon>202004050948354_share.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004051515176_m.resx">
+      <DependentUpon>202004051515176_m.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

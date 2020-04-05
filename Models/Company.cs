@@ -19,9 +19,9 @@ namespace Models
 
         public string Simbol { get; set; }
 
-        public int? SharesCount { get; set; }
+        public int? NumberOfTotalShares { get; set; }
         
-        public decimal SharePrice { get; set; }
+        public decimal MarketSharePrice { get; set; }
 
         public decimal NominalSharePrice { get; set; }
 

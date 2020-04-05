@@ -19,23 +19,30 @@ namespace Validation
         {
             List<BID> bdL =  Context.OrderOrderedBID(t);
             List<ASK> askL = Context.OrderOrderedASK(t);
-            BID bd = bdL.First();
-            ASK ask = askL.First();
+            BID bd;
+            ASK ask;
 
-            if (bd.Price >= ask.Price)
+            if (bdL.Count > 0 && askL.Count > 0)
             {
+                bd = bdL.First();
+                ask = askL.First();
 
-                if (ask.IsIPO == true)
-                {
-                    Context.UpdateCompanyTransaction(bd, ask);
-                }
-                else
+                if (bd.Price >= ask.Price)
                 {
 
-                    Context.UpdateIndividualPortfolio(bd, ask);
-                }
-                Order(t);
+                    if (ask.IsIPO == true)
+                    {
+                        Context.UpdateCompanyTransaction(bd, ask);
+                    }
+                    else
+                    {
 
+                        Context.UpdateIndividualPortfolio(bd, ask);
+                    }
+
+                    Order(t);
+
+                }
             }
         }
 
@@ -48,5 +55,21 @@ namespace Validation
                 Order(t);
             }
         }
+
+        public static void ValidateSELL(Transaction t)
+        {
+            Portofolio portofolio = Context.FindPortofolio(t);
+            if(portofolio != null && portofolio.Quantity > 0)
+            {
+                if(t.ASK.Quantity > portofolio.Quantity)
+                {
+                    t.ASK.Quantity = portofolio.Quantity;
+                }
+                Context.InsertASK(t.ASK);
+                Order(t);
+            }
+           
+        }
+
     }
 }

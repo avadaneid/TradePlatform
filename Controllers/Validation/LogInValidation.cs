@@ -14,8 +14,11 @@ namespace Validation
             using (Connect db = new Connect())
             {
                 Account account = db.Accounts.Where<Account>(model => model.UserName.Equals(username) && model.Password.Equals(password)).FirstOrDefault();
+                Individual individual = db.Individuals.Where(i => i.UserName == username).FirstOrDefault();
+                Company company = db.Companies.Where(c => c.UserName == username).FirstOrDefault();
 
-                if (account != null)
+
+                if (account != null && (individual != null || company != null) )
                 {
                     ValidCredentials = true;
                     AccountType = account.AccountType;

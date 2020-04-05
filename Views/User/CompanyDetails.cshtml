@@ -5,9 +5,18 @@
 @using Models;
 
 @{
-    var ASK = ViewBag.ASK as IEnumerable<Models.ASK>;
+    var ASK = ViewBag.ASK as IList<Models.ASK>;
     var BID = ViewBag.BID as IEnumerable<Models.BID>;
     var Transaction = ViewBag.Transaction as Transaction;
+    string CompanyName;
+    if (ASK.Count > 0)
+    {
+        CompanyName = ASK[0].CompanyName;
+    }
+    else
+    {
+        CompanyName = "null";
+    }
 }
 
 
@@ -16,12 +25,14 @@
 <link href="~/Content/bootstrap.css" rel="stylesheet" />
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/Chart.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css" />
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script>
 
 <script>
     $(document).ready(function () {
+        console.log("document_ready")
 
             $('#verticalScroll').DataTable({
                 "scrollY": "50vh",
@@ -35,21 +46,24 @@
             });
             $('.dataTables_length').addClass('bs-select');
 
-            $("#bb").click(function () {
+        $("#bb").click(function () {
+
                 var Transaction = {
                     BID: {
-                        CreatedOn:'@DateTime.Now.ToString()',
+                        CreatedOn: '@DateTime.Now.ToString()',
                         Price: $("#b_p").val(),
                         Quantity: $("#b_q").val(),
                         CUI:@Transaction.CUI,
-                        CNP:@Transaction.CNP
-                    }
+                        CNP:@Transaction.CNP,                      
+                        CompanyName:"@CompanyName"
+                    },
+                    CUI : "@Transaction.CUI"
                 }
 
                 $.ajax(
                 {
                     type: "POST",
-                        url: "/User/Order",
+                        url: "/User/BUY",
                         data: Transaction,
                     cache: false,
                         async: true,
@@ -59,17 +73,72 @@
                       
                     },
 
-                });
+                    });
+            location.reload();
+        });
 
-                 location.reload();
 
-            });
-        })
+         $("#bs").click(function () {
+
+                var Transaction = {
+                    ASK: {
+                        CreatedOn: '@DateTime.Now.ToString()',
+                        Price: $("#s_p").val(),
+                        Quantity: $("#s_q").val(),
+                        CUI:@Transaction.CUI,
+                        CNP:@Transaction.CNP,                      
+                        CompanyName: "@CompanyName",
+                        IsIPO:false
+                    },
+                    CUI : "@Transaction.CUI"
+                }
+
+                $.ajax(
+                {
+                    type: "POST",
+                        url: "/User/SELL",
+                        data: Transaction,
+                    cache: false,
+                        async: true,
+                     dataType: "json",
+                    success: function (data) {
+                        alert(data);
+                      
+                    },
+
+                    });
+            location.reload();
+        });
+
+
+
+            //doughnut
+                //var ctxD = document.getElementById("doughnutChart").getContext('2d');
+                //var myLineChart = new Chart(ctxD, {
+
+                //type: 'doughnut',
+                //data: {
+                //labels: ["Red", "Green", "Yellow", "Grey", "Dark Grey"],
+                //datasets: [{
+                //data: [300, 50, 100, 40, 120],
+                //backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
+                //hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5", "#616774"]
+                //}]
+                //},
+                //options: {
+                //responsive: true
+                //}
+                //});
+
+    })
+
 </script>
 
 <html>
 
 <body>
+    @*<canvas id="doughnutChart" width=326 height=240 style='width:326px;height:240px'></canvas>*@
+
     <div style="padding-left:10%">
 
         <div style="width:40%;float:left">
@@ -113,6 +182,7 @@
                 <input type="text" id="b_p" class="form-control" style="width:50%" />
                 Quantity
                 <input type="text" id="b_q" class="form-control" style="width:50%" />
+
                 <button type="button" id="bb" style="float:left" value="Details" class="btn btn-primary">
                     BUY
                 </button>
@@ -163,9 +233,9 @@
                 <input type="text" id="s_p" class="form-control" style="width:50%" />
                 <a2>Quantity</a2>
                 <input type="text" id="s_q" class="form-control" style="width:50%" />
-                <button type="button" value="Details" class="btn btn-primary"
-                        onclick="location.href='@Url.Action("Order","User",Transaction)'">
-                    SELL
+
+                <button type="button" id="bs" style="float:left" value="Details" class="btn btn-primary">
+                   SELL
                 </button>
 
             </div>

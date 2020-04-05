@@ -232,9 +232,9 @@ namespace EntityFramework
                     cfi = new CompanyFinancialIndicators();
                     cfi.Cui = cui;
                     cfi.EarningPerShare = cfd.NetProfit / lst.NumberOfShares;
-                    cfi.PriceBookValue = co.SharePrice / (cfd.TotalEquity/ lst.NumberOfShares);
+                    cfi.PriceBookValue = co.MarketSharePrice / (cfd.TotalEquity/ lst.NumberOfShares);
                     cfi.Capitalisation = 0;
-                    cfi.PriceEarningsRatio = co.SharePrice / cfi.EarningPerShare;
+                    cfi.PriceEarningsRatio = co.MarketSharePrice / cfi.EarningPerShare;
 
                     o.CompanyFinancialIndicators.Add(cfi);
                     o.SaveChanges();
@@ -257,10 +257,10 @@ namespace EntityFramework
                 {
                     var cui = c.CUI;
                     var result = o.Companies.Where(i => i.CUI == cui).DistinctBy(x => x.CUI).FirstOrDefault();
-                    result.SharesCount = lst.NumberOfShares;
+                    result.NumberOfTotalShares = lst.NumberOfShares;
                     result.IsListed = true;
-                    result.SharePrice = (cfd.TotalEquity * lst.Percent) / lst.NumberOfShares;
-                    result.NominalSharePrice = result.SharePrice;
+                    result.MarketSharePrice = (cfd.TotalEquity * lst.Percent) / lst.NumberOfShares;
+                    result.NominalSharePrice = result.MarketSharePrice;
                     result.SharesOnInitialIPO = lst.NumberOfShares;
 
                     UpdateCompanyBeginTransactionDate(cui, DateTime.Now);
@@ -356,12 +356,22 @@ namespace EntityFramework
             }
         }
 
+        public static void InsertASK(ASK ask)
+        {
+            using (Connect a = new Connect())
+            {
+                a.Ask.Add(ask);
+                a.SaveChanges();
+            }
+        }
+
+
         public static List<BID> OrderOrderedBID(Transaction t)
         {
             List<BID> lst;
             using (Connect cnt = new Connect())
             {
-                lst = cnt.Bid.OrderByDescending(j => j.Price).ThenBy(m => m.CreatedOn).ToList();
+                lst = cnt.Bid.Where(l => l.CUI == t.CUI).OrderByDescending(j => j.Price).ThenBy(m => m.CreatedOn).ToList();
             }
             return lst;
         }
@@ -371,7 +381,7 @@ namespace EntityFramework
             List<ASK> lst;
             using (Connect cnt = new Connect())
             {
-                lst = cnt.Ask.OrderBy(j => j.Price).ThenBy(m => m.CreatedOn).ToList();
+                lst = cnt.Ask.Where(l => l.CUI == t.CUI).OrderBy(j => j.Price).ThenBy(m => m.CreatedOn).ToList();
             }
             return lst;
         }
@@ -384,13 +394,12 @@ namespace EntityFramework
                 Company c = cnt.Companies
                 .Where(company => company.CUI == bid_p.CUI)
                 .FirstOrDefault<Company>();
-                c.SharePrice = bid_p.Price;
+                c.MarketSharePrice = ask_p.Price;
 
                
                 ASK ask = cnt.Ask.Where(p => p.Id == ask_p.Id).FirstOrDefault();
                 BID bid = cnt.Bid.Where(p => p.Id == bid_p.Id).FirstOrDefault();
-
-                ask.Price = bid_p.Price;
+                int quantityBID;
 
                 if (ask_p.Quantity > bid_p.Quantity)
                 {
@@ -399,12 +408,34 @@ namespace EntityFramework
                     c.Debit += bid_p.Price * bid_p.Quantity;
                     c.SharesOnInitialIPO -= bid_p.Quantity;
                     cnt.Bid.Remove(bid);
-                }else if(ask_p.Quantity == bid_p.Quantity)
+
+                    quantityBID = bid_p.Quantity;
+                    InsertTransactions(new Transactions
+                    {
+                        BuyFrom = ask_p.CUI,
+                        SellTo = bid_p.CNP,
+                        CreatedOn = DateTime.Now,
+                        FromIPO = true,
+                        Price = ask_p.Price,
+                        Quantity = bid_p.Quantity
+                    });
+                }
+                else if(ask_p.Quantity == bid_p.Quantity)
                 {
                     c.Debit += bid_p.Price * bid_p.Quantity;
                     c.SharesOnInitialIPO -= bid_p.Quantity;
                     cnt.Ask.Remove(ask);
                     cnt.Bid.Remove(bid);
+                    quantityBID = bid_p.Quantity;
+                    InsertTransactions(new Transactions
+                    {
+                        BuyFrom = ask_p.CUI,
+                        SellTo = bid_p.CNP,
+                        CreatedOn = DateTime.Now,
+                        FromIPO = false,
+                        Price = ask_p.Price,
+                        Quantity = bid_p.Quantity
+                    });
                 }
                 else
                 {
@@ -413,9 +444,22 @@ namespace EntityFramework
                     c.Debit += bid_p.Price * bid_p.Quantity;
                     c.SharesOnInitialIPO = 0;
                     cnt.Ask.Remove(ask);
+
+                    quantityBID = ask_p.Quantity;
+                    InsertTransactions(new Transactions
+                    {
+                        BuyFrom = ask_p.CUI,
+                        SellTo = bid_p.CNP,
+                        CreatedOn = DateTime.Now,
+                        FromIPO = false,
+                        Price = ask_p.Price,
+                        Quantity = ask_p.Quantity
+                    });
                 }
 
+                c.MarketSharePrice = ask_p.Price;
 
+                bid_p.Quantity = quantityBID;
                 UpdatePortfolio(bid_p);
 
 
@@ -434,8 +478,8 @@ namespace EntityFramework
 
                 ASK ask = cnt.Ask.Where(p => p.Id == ask_p.Id).FirstOrDefault();
                 BID bid = cnt.Bid.Where(p => p.Id == bid_p.Id).FirstOrDefault();
+                int quantityBID;
 
-                ask.Price = ask_p.Price;
 
                 if (ask_p.Quantity > bid_p.Quantity)
                 {
@@ -444,6 +488,19 @@ namespace EntityFramework
                     i.Debit += bid_p.Price * bid_p.Quantity;
                     portf.Quantity -= bid_p.Quantity;
                     cnt.Bid.Remove(bid);
+
+                    quantityBID = bid_p.Quantity;
+                    InsertTransactions(new Transactions
+                    {
+                        BuyFrom = ask_p.CNP,
+                        SellTo = bid_p.CNP,
+                        CreatedOn = DateTime.Now,
+                        FromIPO = false,
+                        Price = ask_p.Price,
+                        Quantity = bid_p.Quantity
+                    });
+
+
                 }
                 else if (ask_p.Quantity == bid_p.Quantity)
                 {
@@ -451,18 +508,42 @@ namespace EntityFramework
                     portf.Quantity -= bid_p.Quantity;
                     cnt.Ask.Remove(ask);
                     cnt.Bid.Remove(bid);
+
+                    quantityBID = bid_p.Quantity;
+                    InsertTransactions(new Transactions
+                    {
+                        BuyFrom = ask_p.CNP,
+                        SellTo = bid_p.CNP,
+                        CreatedOn = DateTime.Now,
+                        FromIPO = false,
+                        Price = ask_p.Price,
+                        Quantity = bid_p.Quantity
+                    });
                 }
                 else
                 {
                     var remain_bid = bid_p.Quantity - ask_p.Quantity;
                     bid.Quantity = remain_bid;
-                    i.Debit += bid_p.Price * bid_p.Quantity;
-                    portf.Quantity -= bid_p.Quantity;
+                    i.Debit += bid_p.Price * ask_p.Quantity;
+                    portf.Quantity -= ask_p.Quantity;
                     cnt.Ask.Remove(ask);
-                }
 
-                Company comp = cnt.Companies.Where(c => c.CUI == bid_p.CUI).FirstOrDefault();
-                comp.SharePrice = bid_p.Price;
+                    quantityBID = ask_p.Quantity;
+                    InsertTransactions(new Transactions
+                    {
+                        BuyFrom = ask_p.CNP,
+                        SellTo = bid_p.CNP,
+                        CreatedOn = DateTime.Now,
+                        FromIPO = false,
+                        Price = ask_p.Price,
+                        Quantity = ask_p.Quantity
+                    });
+                }              
+
+                Company comp = cnt.Companies.Where(c => c.CUI == bid_p.CUI).FirstOrDefault();               
+                comp.MarketSharePrice = ask_p.Price;
+
+                bid_p.Quantity = quantityBID;
                 UpdatePortfolio(bid_p);
                 cnt.SaveChanges();
             }
@@ -474,7 +555,9 @@ namespace EntityFramework
             using (Connect cnt = new Connect())
             {
                 Individual i = cnt.Individuals.Where(p => p.CNP == b.CNP).FirstOrDefault();
+
                 i.Debit -= b.Price * b.Quantity;
+
                 Portofolio portf = cnt.Portofolios.Where(q => q.CNP == b.CNP && q.CUI == b.CUI).FirstOrDefault();
                 if (portf == null)
                 {
@@ -498,6 +581,27 @@ namespace EntityFramework
             }         
 
         }
+
+        public static Portofolio FindPortofolio(Transaction t)
+        {
+            Portofolio port;
+
+            using (Connect c = new Connect())
+            {
+                port = c.Portofolios.Where(p => p.CUI == t.CUI && p.CNP == t.ASK.CNP).FirstOrDefault();
+            }
+
+            return port;
+        }
+
       
+        public static void InsertTransactions (Transactions t)
+        {
+            using(Connect c = new Connect())
+            {
+                c.Transactions.Add(t);
+                c.SaveChanges();
+            }
+        }
     }
 }

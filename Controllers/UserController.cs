@@ -75,10 +75,15 @@ namespace TradingPlatform.Controllers
         }
       
         [HttpPost]
-        public void Order(Transaction t)
+        public void BUY(Transaction t)
         {
-            TransactionValidation.ValidateBUY(t);
-            Redirect(Request.UrlReferrer.ToString());
+            TransactionValidation.ValidateBUY(t);          
+        }
+
+        [HttpPost]
+        public void SELL(Transaction t)
+        {
+            TransactionValidation.ValidateSELL(t);         
         }
     }
 }
