@@ -68,6 +68,8 @@ namespace Models
         public long SellTo { get; set; }
         public long BuyFrom { get; set; }
         public bool FromIPO { get; set; }
+        public long CompanyIdentifier { get; set; }
+        public string CompanyName { get; set; }
         public DateTime CreatedOn { get; set; }
     }
 }

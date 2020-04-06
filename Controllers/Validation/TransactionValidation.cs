@@ -22,12 +22,26 @@ namespace Validation
             BID bd;
             ASK ask;
 
+            
             if (bdL.Count > 0 && askL.Count > 0)
             {
-                bd = bdL.First();
-                ask = askL.First();
+                bd = bdL.First(); 
+                ask = new ASK { }; 
+                var x = false;
 
-                if (bd.Price >= ask.Price)
+                foreach (ASK _ask in askL)
+                {
+                    if (_ask.CNP != bd.CNP)
+                    {
+                        ask = _ask;
+                        x = true;
+                        break;
+                    }
+                   
+                }
+               
+
+                if (x == true && bd.Price >= ask.Price)
                 {
 
                     if (ask.IsIPO == true)
@@ -48,12 +62,12 @@ namespace Validation
 
         public static void ValidateBUY(Transaction t)
         {
-            Individual individual = Context.FindIndividual(t.BID.CNP);
-            if(individual.Debit >= (t.BID.Price * t.BID.Quantity))
+            if (Context.CheckUserDebitOrder(t))
             {
                 Context.InsertBID(t.BID);
                 Order(t);
             }
+            
         }
 
         public static void ValidateSELL(Transaction t)
@@ -65,8 +79,11 @@ namespace Validation
                 {
                     t.ASK.Quantity = portofolio.Quantity;
                 }
-                Context.InsertASK(t.ASK);
-                Order(t);
+                if (Context.CheckCountASKPortfolio(t))
+                {
+                    Context.InsertASK(t.ASK);
+                    Order(t);
+                }
             }
            
         }
