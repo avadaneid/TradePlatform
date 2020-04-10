@@ -697,5 +697,28 @@ namespace EntityFramework
             }
 
         }
+
+        public static List<Portofolio> FindPortofolios(long cnp)
+        {
+            List<Portofolio> p;
+
+            using (Connect a = new Connect())
+            {
+                p = a.Portofolios.Where(t => t.CNP == cnp).ToList();
+            }
+
+            return p;
+        }
+
+        public static List<BID> FindBIDsForIndividual(long cnp)
+        {
+            List<BID> lstBD;
+            using (Connect c = new Connect())
+            {
+                lstBD = c.Bid.Where(b => b.CNP == cnp).ToList();
+            }
+            return lstBD;
+        }
+
     }
 }

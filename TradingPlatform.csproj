@@ -358,6 +358,7 @@
     <Content Include="Views\Shared\CompanyListing.cshtml" />
     <Content Include="Views\User\CompanyDetails.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\PartialViewBID.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\" />

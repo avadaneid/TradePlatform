@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace Models
 {
@@ -11,6 +12,7 @@ namespace Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [HiddenInput(DisplayValue = false)]
         public int Id { get; set; }
         public long CUI { get; set; }
         public long CNP { get; set; }

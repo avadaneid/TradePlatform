@@ -85,5 +85,26 @@ namespace TradingPlatform.Controllers
         {
             TransactionValidation.ValidateSELL(t);         
         }
+
+        
+        public  void UpdateBID(BID b)
+        {
+           
+          
+        }
+        
+        public PartialViewResult PartialViewBID(long cnp)
+        {
+            List<BID> lstBD = Context.FindBIDsForIndividual(cnp);
+            ViewBag.BIDList = lstBD;
+            return PartialView("PartialViewBID");
+        }
+        
+        public ActionResult PortofolioGraph(long cnp)
+        {                        
+            List<Portofolio> port = Context.FindPortofolios(cnp);
+
+            return Json(port.ToArray(), JsonRequestBehavior.AllowGet);           
+        }
     }
 }

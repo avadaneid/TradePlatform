@@ -58,6 +58,12 @@ namespace TradingPlatform
             defaults: new { controller = "User", action = "Order", id = UrlParameter.Optional }
             );
 
+            routes.MapRoute(
+           name: "Portofolio",
+           url: "{User}/{PortofolioGraph}",
+           defaults: new { controller = "User", action = "PortofolioGraph", id = UrlParameter.Optional }
+           );
+
         }
     }
 }
