@@ -53,7 +53,6 @@ namespace EntityFramework
 
     public static class Context
     {
-
         public static void InsertLogIn(Account account)
         {
             try
@@ -161,7 +160,6 @@ namespace EntityFramework
             }
         }
         
-
         public static Company FindCompany(string username)
         {
             Company co;
@@ -205,7 +203,6 @@ namespace EntityFramework
 
             return co;
         }
-
 
         public static List<CompanyFinancialDetails> FindCompanyFinancialDetails(string username)
         {
@@ -365,7 +362,6 @@ namespace EntityFramework
             }
         }
 
-
         public static List<BID> OrderOrderedBID(Transaction t)
         {
             List<BID> lst;
@@ -475,10 +471,11 @@ namespace EntityFramework
 
                 ask_p.Quantity = quantityBID;
 
-                UpdatePortfolio(bid_p,ask_p);
-
+                UpdatePortfolio(bid_p,ask_p);            
 
                 cnt.SaveChanges();
+
+                UpdateFinancialIndicators(ask_p.CUI);
             }
 
         }
@@ -574,11 +571,12 @@ namespace EntityFramework
 
                 ask_p.Quantity = bd_q;
 
+                UpdatePortfolio(bid_p,ask_p);               
 
-                UpdatePortfolio(bid_p,ask_p);
                 cnt.SaveChanges();
-            }
 
+                UpdateFinancialIndicators(ask_p.CUI);
+            }
         }
 
         public static void UpdatePortfolio(BID b,ASK k)
@@ -609,8 +607,9 @@ namespace EntityFramework
                 }
 
                 cnt.SaveChanges();
-            }         
+            }
 
+            VerifyAndDeleteEmptyPortfolio();
         }
 
         public static Portofolio FindPortofolio(Transaction t)
@@ -624,8 +623,7 @@ namespace EntityFramework
 
             return port;
         }
-
-      
+   
         public static void InsertTransactions (Transactions t)
         {
             using(Connect c = new Connect())
@@ -720,5 +718,42 @@ namespace EntityFramework
             return lstBD;
         }
 
+        public static void UpdateFinancialIndicators(long cui)
+        {
+            CompanyFinancialIndicators cfi;
+            Company comp;
+            CompanyFinancialDetails cfd;
+
+            using (Connect c = new Connect())
+            {
+                cfi = c.CompanyFinancialIndicators.Where(w => w.Cui == cui).FirstOrDefault();
+                comp = c.Companies.Where(d => d.CUI == cui).FirstOrDefault();
+                cfd = c.CompanyFinancialDetails.Where(l => l.CUI == cui).FirstOrDefault();
+
+                cfi.Capitalisation = (comp.NumberOfTotalShares - comp.SharesOnInitialIPO) * comp.MarketSharePrice;
+                cfi.PriceBookValue = comp.MarketSharePrice / (cfd.TotalEquity / comp.NumberOfTotalShares);
+                cfi.PriceEarningsRatio = comp.MarketSharePrice / cfi.EarningPerShare;
+
+                c.SaveChanges();
+            }
+        }
+
+        public static void VerifyAndDeleteEmptyPortfolio()
+        {
+            List<Portofolio> lp;
+            using (Connect c = new Connect())
+            {
+                lp = c.Portofolios.Where(p => p.Quantity == 0).ToList();
+
+                if (lp != null)
+                {
+                    foreach(Portofolio p in lp)
+                    {
+                        c.Portofolios.Remove(p);
+                    }
+                }
+                c.SaveChanges();
+            }
+        }
     }
 }

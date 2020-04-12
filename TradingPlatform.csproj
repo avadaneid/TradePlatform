@@ -200,6 +200,10 @@
     <Compile Include="Migrations\202004061232231_migr_tr.designer.cs">
       <DependentUpon>202004061232231_migr_tr.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004120642181_b.cs" />
+    <Compile Include="Migrations\202004120642181_b.designer.cs">
+      <DependentUpon>202004120642181_b.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\EntityFramework\EntityFrameworkInterface.cs" />
@@ -415,6 +419,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004061232231_migr_tr.resx">
       <DependentUpon>202004061232231_migr_tr.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004120642181_b.resx">
+      <DependentUpon>202004120642181_b.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
