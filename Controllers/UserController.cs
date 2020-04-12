@@ -93,6 +93,18 @@ namespace TradingPlatform.Controllers
           
         }
         
+        public PartialViewResult RenderGraph(long cui)
+        {
+            ViewBag.Cui = cui;
+            return PartialView("RenderGraph");
+        }
+
+        public ActionResult GraphData(long cui)
+        {
+            List<TransactionReport> tr = Context.TransactionReport(cui);
+            return Json(tr.ToArray(), JsonRequestBehavior.AllowGet);
+        }
+
         public PartialViewResult PartialViewBID(long cnp)
         {
             List<BID> lstBD = Context.FindBIDsForIndividual(cnp);

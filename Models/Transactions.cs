@@ -74,4 +74,21 @@ namespace Models
         public string CompanyName { get; set; }
         public DateTime CreatedOn { get; set; }
     }
+
+    [Table("TransactionReport")]
+    public class TransactionReport
+    {
+        [Key]
+        public Guid Id { get; set; }
+        public int CompanyIdentifier { get; set; }
+        public DateTime Date { get; set; }
+        public decimal OpenPrice { get; set; }
+        public decimal ClosingPrice { get; set; }
+        public int Volume { get; set; }
+        public decimal Value { get; set; }
+        public decimal High { get; set; }
+        public decimal Low { get; set; }
+
+    }
+
 }

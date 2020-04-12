@@ -29,6 +29,7 @@ namespace EntityFramework
         public DbSet<BID> Bid { get; set; }
         public DbSet<Transactions> Transactions { get; set; }
         public DbSet<Portofolio> Portofolios { get; set; }
+        public DbSet<TransactionReport> TransactionReports { get; set; }
            
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -754,6 +755,18 @@ namespace EntityFramework
                 }
                 c.SaveChanges();
             }
+        }
+
+        public static List<TransactionReport> TransactionReport(long cui)
+        {
+            List<TransactionReport> lst;
+
+            using (Connect c = new Connect())
+            {
+                lst = c.TransactionReports.Where(co => co.CompanyIdentifier == cui).ToList();
+            }
+
+            return lst;
         }
     }
 }

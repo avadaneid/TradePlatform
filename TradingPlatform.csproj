@@ -144,65 +144,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202003281512334_utpp.cs" />
-    <Compile Include="Migrations\202003281512334_utpp.designer.cs">
-      <DependentUpon>202003281512334_utpp.cs</DependentUpon>
+    <Compile Include="Migrations\202004121417511_TR.cs" />
+    <Compile Include="Migrations\202004121417511_TR.designer.cs">
+      <DependentUpon>202004121417511_TR.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202003291419180_affr.cs" />
-    <Compile Include="Migrations\202003291419180_affr.designer.cs">
-      <DependentUpon>202003291419180_affr.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004011111049_Listing.cs" />
-    <Compile Include="Migrations\202004011111049_Listing.designer.cs">
-      <DependentUpon>202004011111049_Listing.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004011308505_p.cs" />
-    <Compile Include="Migrations\202004011308505_p.designer.cs">
-      <DependentUpon>202004011308505_p.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004020946039_T.cs" />
-    <Compile Include="Migrations\202004020946039_T.designer.cs">
-      <DependentUpon>202004020946039_T.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004021005411_l.cs" />
-    <Compile Include="Migrations\202004021005411_l.designer.cs">
-      <DependentUpon>202004021005411_l.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004021029288_cui_generated.cs" />
-    <Compile Include="Migrations\202004021029288_cui_generated.designer.cs">
-      <DependentUpon>202004021029288_cui_generated.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004021145557_nominalSharePrice.cs" />
-    <Compile Include="Migrations\202004021145557_nominalSharePrice.designer.cs">
-      <DependentUpon>202004021145557_nominalSharePrice.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004021342028_mm.cs" />
-    <Compile Include="Migrations\202004021342028_mm.designer.cs">
-      <DependentUpon>202004021342028_mm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004021359526_lk.cs" />
-    <Compile Include="Migrations\202004021359526_lk.designer.cs">
-      <DependentUpon>202004021359526_lk.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004041337061_transaction_logic.cs" />
-    <Compile Include="Migrations\202004041337061_transaction_logic.designer.cs">
-      <DependentUpon>202004041337061_transaction_logic.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004050948354_share.cs" />
-    <Compile Include="Migrations\202004050948354_share.designer.cs">
-      <DependentUpon>202004050948354_share.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004051515176_m.cs" />
-    <Compile Include="Migrations\202004051515176_m.designer.cs">
-      <DependentUpon>202004051515176_m.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004061232231_migr_tr.cs" />
-    <Compile Include="Migrations\202004061232231_migr_tr.designer.cs">
-      <DependentUpon>202004061232231_migr_tr.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004120642181_b.cs" />
-    <Compile Include="Migrations\202004120642181_b.designer.cs">
-      <DependentUpon>202004120642181_b.cs</DependentUpon>
+    <Compile Include="Migrations\202004121642106_Te.cs" />
+    <Compile Include="Migrations\202004121642106_Te.designer.cs">
+      <DependentUpon>202004121642106_Te.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Company.cs" />
@@ -363,10 +311,12 @@
     <Content Include="Views\User\CompanyDetails.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\PartialViewBID.cshtml" />
+    <Content Include="Views\Shared\RenderGraph.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\" />
     <Folder Include="Content\Images\" />
+    <Folder Include="Scripts\amcharts\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -378,54 +328,15 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202003281512334_utpp.resx">
-      <DependentUpon>202003281512334_utpp.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202003291419180_affr.resx">
-      <DependentUpon>202003291419180_affr.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004011111049_Listing.resx">
-      <DependentUpon>202004011111049_Listing.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004011308505_p.resx">
-      <DependentUpon>202004011308505_p.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004020946039_T.resx">
-      <DependentUpon>202004020946039_T.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004021005411_l.resx">
-      <DependentUpon>202004021005411_l.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004021029288_cui_generated.resx">
-      <DependentUpon>202004021029288_cui_generated.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004021145557_nominalSharePrice.resx">
-      <DependentUpon>202004021145557_nominalSharePrice.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004021342028_mm.resx">
-      <DependentUpon>202004021342028_mm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004021359526_lk.resx">
-      <DependentUpon>202004021359526_lk.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004041337061_transaction_logic.resx">
-      <DependentUpon>202004041337061_transaction_logic.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004050948354_share.resx">
-      <DependentUpon>202004050948354_share.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004051515176_m.resx">
-      <DependentUpon>202004051515176_m.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004061232231_migr_tr.resx">
-      <DependentUpon>202004061232231_migr_tr.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004120642181_b.resx">
-      <DependentUpon>202004120642181_b.cs</DependentUpon>
-    </EmbeddedResource>
+    <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Scripts\index.d.ts" />
+    <EmbeddedResource Include="Migrations\202004121417511_TR.resx">
+      <DependentUpon>202004121417511_TR.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004121642106_Te.resx">
+      <DependentUpon>202004121642106_Te.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
