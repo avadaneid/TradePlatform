@@ -10,36 +10,38 @@
 {
     @Html.AntiForgeryToken()
 
-    <div>
+    <div style="float:left" class="form-inline">
 
         @foreach (BID b in lstBID)
-        {
+        {         
 
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-      
-            @Html.EditorFor(model => b.Id, new { htmlAttributes = new { @class = "form-control hide" } })
-      
-            <div class="form-group">
-                @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => b.Price, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => b.Price, "", new { @class = "text-danger" })
-                </div>
-            </div>
+                @Html.EditorFor(model => b.Id, new { htmlAttributes = new { @class = "form-control hide" } })
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => b.Quantity, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => b.Quantity, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.DisplayFor(model => b.CompanyName, new { @class = "control-label col-md-2" })
                 </div>
-            </div>
 
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Save" class="btn btn-default" />
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => b.Price, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => b.Price, "", new { @class = "text-danger" })
+                    </div>
                 </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => b.Quantity, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => b.Quantity, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Update" class="btn btn-primary" />
+                    </div>
+                </div>
+                }
             </div>
         }
-    </div>
-}

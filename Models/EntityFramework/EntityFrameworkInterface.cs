@@ -8,6 +8,7 @@ using EntityFramework;
 using System.Linq;
 using System.Data.Entity.Core.Mapping;
 using Microsoft.Ajax.Utilities;
+using Validation;
 
 namespace EntityFramework
 {
@@ -767,6 +768,28 @@ namespace EntityFramework
             }
 
             return lst;
+        }
+
+        public static void UpdateBID(BID bd)
+        {
+            using(Connect c = new Connect())
+            {
+                if (bd.Price == 0 || bd.Quantity == 0) {
+
+                    BID bid = c.Bid.Where(b => b.Id == bd.Id).FirstOrDefault();
+                    c.Bid.Remove(bid);
+                    c.SaveChanges();
+                    TransactionValidation.Order(new Transaction { CUI = bid.CUI });
+                }
+                else
+                {
+                    BID bid = c.Bid.Where(b => b.Id == bd.Id).FirstOrDefault();
+                    bid.Price = bd.Price;
+                    bid.Quantity = bd.Quantity;
+                    c.SaveChanges();
+                    TransactionValidation.Order(new Transaction { CUI = bid.CUI });
+                }
+            }
         }
     }
 }

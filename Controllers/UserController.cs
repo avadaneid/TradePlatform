@@ -19,6 +19,7 @@ namespace TradingPlatform.Controllers
     {    
         public static string username { get; set; }
         public static string password { get; set; }
+        public LogInModel LogInModel { get; set; }
         public ActionResult SesionCompany(LogInModel lm)
         {
             username = lm.UserName;
@@ -35,8 +36,13 @@ namespace TradingPlatform.Controllers
         public ActionResult SesionIndividual(LogInModel lm)
         {
             IEnumerable<Company> comp = Context.FindListedCompanies();
-            ViewBag.ListedCompanies = comp;
+            ViewBag.ListedCompanies = comp;          
 
+            if (lm.UserName != null)
+            {
+                TempData["LoginModel"] = lm;
+            }
+           
             Individual individual = Context.FindIndividual(lm.UserName);
 
             return View(individual);
@@ -86,11 +92,12 @@ namespace TradingPlatform.Controllers
             TransactionValidation.ValidateSELL(t);         
         }
 
-        
-        public  void UpdateBID(BID b)
+        [HttpPost]
+        public ActionResult UpdateBID(BID b)
         {
-           
-          
+            Context.UpdateBID(b);
+            return RedirectToAction("SesionIndividual", TempData["LoginModel"]);
+            
         }
         
         public PartialViewResult RenderGraph(long cui)
