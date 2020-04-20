@@ -676,7 +676,6 @@ namespace EntityFramework
             List<BID> lstBD;
             decimal sumBIDDebit = 0;
 
-
             using (Connect c = new Connect())
             {
                 lstBD = c.Bid.Where(l => l.CNP == t.BID.CNP).ToList();
@@ -720,6 +719,16 @@ namespace EntityFramework
             return lstBD;
         }
 
+        public static List<ASK> FindASKsForIndividual(long cnp)
+        {
+            List<ASK> lstASK;
+            using (Connect c = new Connect())
+            {
+                lstASK = c.Ask.Where(b => b.CNP == cnp).ToList();
+            }
+            return lstASK;
+        }
+     
         public static void UpdateFinancialIndicators(long cui)
         {
             CompanyFinancialIndicators cfi;
@@ -770,26 +779,66 @@ namespace EntityFramework
             return lst;
         }
 
-        public static void UpdateBID(BID bd)
+        public static void UpdateBID(Term term)
         {
             using(Connect c = new Connect())
             {
-                if (bd.Price == 0 || bd.Quantity == 0) {
 
-                    BID bid = c.Bid.Where(b => b.Id == bd.Id).FirstOrDefault();
-                    c.Bid.Remove(bid);
-                    c.SaveChanges();
-                    TransactionValidation.Order(new Transaction { CUI = bid.CUI });
-                }
-                else
-                {
-                    BID bid = c.Bid.Where(b => b.Id == bd.Id).FirstOrDefault();
-                    bid.Price = bd.Price;
-                    bid.Quantity = bd.Quantity;
-                    c.SaveChanges();
-                    TransactionValidation.Order(new Transaction { CUI = bid.CUI });
-                }
+               foreach(UpdateOrder uo in term.Terminal)
+               {
+                    BID b = c.Bid.Where(p => p.Id == uo.id).FirstOrDefault();
+
+                    Transaction t = new Transaction
+                    {
+                       BID = new BID{CNP = b.CNP,Quantity = uo.quantity,Price = uo.price},
+                    };
+                 
+                    if (uo.quantity == 0 || uo.price == 0)
+                    {
+                        c.Bid.Remove(b);
+                        c.SaveChanges();                     
+                    }
+                    else
+                    {
+                        if (CheckUserDebitOrder(t,uo))
+                        {
+                            b.Price = uo.price;
+                            b.Quantity = uo.quantity;
+                            c.SaveChanges();
+                        }
+                                          
+                    }
+                    TransactionValidation.Order(new Transaction { CUI = b.CUI });
+               }
             }
         }
+
+        public static bool CheckUserDebitOrder(Transaction t, UpdateOrder UpdateOrder)
+        {
+            decimal debit = FindIndividual(t.BID.CNP).Debit;
+            List<BID> lstBD;
+            decimal sumBIDDebit = 0;
+
+            using (Connect c = new Connect())
+            {
+                lstBD = c.Bid.Where(l => l.CNP == t.BID.CNP && l.Id != UpdateOrder.id).ToList();
+            }
+
+            foreach (BID b in lstBD)
+            {
+                sumBIDDebit += (b.Price * b.Quantity);
+            }
+
+            if ((sumBIDDebit + (t.BID.Quantity * t.BID.Price)) > debit)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
+        }
+
     }
 }

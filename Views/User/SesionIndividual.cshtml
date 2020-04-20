@@ -14,7 +14,7 @@
 <html>
 
 <head>
-
+  
 </head>
 
 <body>
@@ -128,8 +128,15 @@
         </table>
     </div>
 
-    <div style="float:left" class="form-inline">
+
+    <div style="padding-right:80%">BUY</div>
+    <div style="float:left;padding-right:50%" class="form-inline">
         @Html.Action("PartialViewBID", "User", new { cnp = pin })
+    </div>
+
+    <div style="padding-right:80%">SELL</div>
+    <div style="float:left" class="form-inline">
+        @Html.Action("PartialViewASK", "User", new { cnp = pin })
     </div>
 
 </body>

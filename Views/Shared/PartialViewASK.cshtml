@@ -1,38 +1,36 @@
 ﻿@using Models;
-@using Newtonsoft.Json;
 
 @{
-    var lstBID = ViewBag.BIDList as IEnumerable<BID>;
-
+    var lstASK = ViewBag.ASKList as IEnumerable<ASK>;
 }
 
-@model Models.BID
+@model Models.ASK
 
 <head>
     <script>
 
         $(document).ready(function () {
 
-            
-              $('.send-all').on('click', function() {
+
+              $('.send-al').on('click', function() {
                     var data = $('#verticalScroll tr').map(function () {
 
                           var $row = $(this);
                           return {
-                            id: $row.find('.id').text().trim(),
-                            companyName: $row.find('.companyname').text().trim(),
-                            price: $row.find('.price').text().trim(),
-                            quantity: $row.find('.quantity').text().trim(),
+                            id: $row.find('.id_ask').text().trim(),
+                            companyName: $row.find('.companyname_ask').text().trim(),
+                            price: $row.find('.price_ask').text().trim(),
+                            quantity: $row.find('.quantity_ask').text().trim(),
                           }
 
                     }).get();
 
                       var UpdateOrder = [];
                       for (var i = 0; i < data.length; i++) {
-                          if (data[i].id != null && data[i].id != "") {                       
+                          if (data[i].id != null && data[i].id != "") {
                               UpdateOrder.push(data[i]);
                           }
-                      }                 
+                      }
 
                   var Term = {
 
@@ -42,22 +40,22 @@
                   $.ajax(
                   {
                        type: "POST",
-                       url: "/User/UpdateBID",
+                       url: "/User/UpdateASK",
                        data: Term,
                        cache: false,
                        async: true,
                        dataType: "json",
                        success: function (data) {
                        alert(data);
-                      
+
                        },
 
-                  });             
+                  });
 
-                      
+
               });
 
-  
+
         });
 
     </script>
@@ -86,30 +84,31 @@
             </thead>
             <tbody>
 
-                @foreach (BID b in lstBID)
+                @foreach (ASK ASK in lstASK)
                 {
                     <tr>
 
-                        <td class="id">
-                            @b.Id
+                        <td class="id_ask">
+                            @ASK.Id
                         </td>
-                        <td class="companyname">
-                            @b.CompanyName
+                        <td class="companyname_ask">
+                            @ASK.CompanyName
                         </td>
-                        <td class="price" contenteditable="true">
-                            @b.Price
+                        <td class="price_ask" contenteditable="true">
+                            @ASK.Price
                         </td>
-                        <td class="quantity" contenteditable="true">
-                            @b.Quantity
+                        <td class="quantity_ask" contenteditable="true">
+                            @ASK.Quantity
                         </td>
 
                     </tr>
-                 }
+                }
             </tbody>
         </table>
-        <button type="button" value="Details" class="btn btn-primary send-all">
+        <button type="button" value="Details" class="btn btn-primary send-al">
             Update
         </button>
     </div>
 </body>
 </html>
+

@@ -52,7 +52,7 @@ namespace TradingPlatform.Controllers
                 ModelState.AddModelError("CustomError", TempData["CustomError"].ToString());
             }
             return View();
-        }
+        }    
 
         public ActionResult SignUp()
         {

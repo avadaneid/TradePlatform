@@ -27,6 +27,7 @@ namespace Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [HiddenInput(DisplayValue = false)]
         public int Id { get; set; }
         public long CUI { get; set; }
         public long CNP { get; set; }
@@ -91,4 +92,16 @@ namespace Models
 
     }
 
+    public class UpdateOrder
+    {
+        public int id { get; set; }
+        public string companyName { get; set; }
+        public decimal price { get; set; }
+        public int quantity { get; set; }
+    }
+
+    public class Term
+    {
+        public UpdateOrder[] Terminal { get; set; }
+    }
 }

@@ -92,14 +92,19 @@ namespace TradingPlatform.Controllers
             TransactionValidation.ValidateSELL(t);         
         }
 
-        [HttpPost]
-        public ActionResult UpdateBID(BID b)
-        {
-            Context.UpdateBID(b);
+        public ActionResult UpdateBID(Term Term)
+        {        
+            Context.UpdateBID(Term);
             return RedirectToAction("SesionIndividual", TempData["LoginModel"]);
-            
         }
-        
+
+
+        public ActionResult UpdateASK(Term Term)
+        {
+            //Context.UpdateASK(Term);          
+            return RedirectToAction("SesionIndividual", TempData["LoginModel"]);
+        }
+
         public PartialViewResult RenderGraph(long cui)
         {
             ViewBag.Cui = cui;
@@ -118,7 +123,15 @@ namespace TradingPlatform.Controllers
             ViewBag.BIDList = lstBD;
             return PartialView("PartialViewBID");
         }
-        
+
+
+        public PartialViewResult PartialViewASK(long cnp)
+        {
+            List<ASK> lstask = Context.FindASKsForIndividual(cnp);
+            ViewBag.ASKList = lstask;
+            return PartialView("PartialViewASK");
+        }
+
         public ActionResult PortofolioGraph(long cnp)
         {                        
             List<Portofolio> port = Context.FindPortofolios(cnp);
