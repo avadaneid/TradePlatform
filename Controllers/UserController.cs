@@ -101,7 +101,7 @@ namespace TradingPlatform.Controllers
 
         public ActionResult UpdateASK(Term Term)
         {
-            //Context.UpdateASK(Term);          
+            Context.UpdateASK(Term);          
             return RedirectToAction("SesionIndividual", TempData["LoginModel"]);
         }
 

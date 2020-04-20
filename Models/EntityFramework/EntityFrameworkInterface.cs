@@ -779,6 +779,9 @@ namespace EntityFramework
             return lst;
         }
 
+
+
+
         public static void UpdateBID(Term term)
         {
             using(Connect c = new Connect())
@@ -830,6 +833,75 @@ namespace EntityFramework
             }
 
             if ((sumBIDDebit + (t.BID.Quantity * t.BID.Price)) > debit)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
+        }
+
+        public static void UpdateASK(Term term)
+        {
+            using (Connect c = new Connect())
+            {
+
+                foreach (UpdateOrder uo in term.Terminal)
+                {
+                    ASK ask = c.Ask.Where(p => p.Id == uo.id).FirstOrDefault();
+
+                    Transaction t = new Transaction
+                    {
+                        ASK = new ASK { CNP = ask.CNP, Quantity = uo.quantity, Price = uo.price,CUI = ask.CUI },
+                    };
+
+                    if (uo.quantity == 0 || uo.price == 0)
+                    {
+                        c.Ask.Remove(ask);
+                        c.SaveChanges();
+                    }
+                    else
+                    {
+                        if (CheckCountASKPortfolio(uo,t))
+                        {
+                            ask.Price = uo.price;
+                            ask.Quantity = uo.quantity;
+                            c.SaveChanges();
+                        }
+
+                    }
+                    TransactionValidation.Order(new Transaction { CUI = ask.CUI });
+                }
+            }
+        }
+
+        public static bool CheckCountASKPortfolio(UpdateOrder term,Transaction t)
+        {
+            List<ASK> countASK;
+            List<Portofolio> countPortfolio;
+            int cntASK = 0;
+            int cntPort = 0;
+            using (Connect a = new Connect())
+            {
+                countASK = a.Ask.Where(l => l.CNP == t.ASK.CNP && t.ASK.CUI == l.CUI && l.Id != term.id).ToList();
+
+                countPortfolio = a.Portofolios.Where(l => l.CNP == t.ASK.CNP && t.ASK.CUI == l.CUI).ToList();
+
+            }
+            foreach (ASK a in countASK)
+            {
+                cntASK += a.Quantity;
+            }
+            foreach (Portofolio p in countPortfolio)
+            {
+                cntPort += p.Quantity;
+            }
+
+            int sum = t.ASK.Quantity + cntASK;
+
+            if (sum > cntPort)
             {
                 return false;
             }

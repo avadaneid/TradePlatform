@@ -82,6 +82,7 @@ namespace Models
         [Key]
         public Guid Id { get; set; }
         public int CompanyIdentifier { get; set; }
+        public string CompanyName { get; set; }
         public DateTime Date { get; set; }
         public decimal OpenPrice { get; set; }
         public decimal ClosingPrice { get; set; }

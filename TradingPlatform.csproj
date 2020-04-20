@@ -152,6 +152,10 @@
     <Compile Include="Migrations\202004121642106_Te.designer.cs">
       <DependentUpon>202004121642106_Te.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004201509341_CompanyName.cs" />
+    <Compile Include="Migrations\202004201509341_CompanyName.designer.cs">
+      <DependentUpon>202004201509341_CompanyName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\EntityFramework\EntityFrameworkInterface.cs" />
@@ -338,6 +342,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004121642106_Te.resx">
       <DependentUpon>202004121642106_Te.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004201509341_CompanyName.resx">
+      <DependentUpon>202004201509341_CompanyName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
