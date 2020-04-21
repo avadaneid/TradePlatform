@@ -1,6 +1,7 @@
 ﻿using EntityFramework;
 using Models;
 using System.Linq;
+using CRIPT = BCrypt.Net;
 
 namespace Validation
 {
@@ -13,16 +14,22 @@ namespace Validation
         {
             using (Connect db = new Connect())
             {
-                Account account = db.Accounts.Where<Account>(model => model.UserName.Equals(username) && model.Password.Equals(password)).FirstOrDefault();
+                Account account = db.Accounts.Where<Account>(model => model.UserName.Equals(username)).FirstOrDefault();
+                bool v = false;
+
+                if (account != null)
+                {
+                     v = Crypt.VerifyPassword(password, account.Password);
+                }
+            
                 Individual individual = db.Individuals.Where(i => i.UserName == username).FirstOrDefault();
                 Company company = db.Companies.Where(c => c.UserName == username).FirstOrDefault();
 
 
-                if (account != null && (individual != null || company != null) )
+                if (v == true && (individual != null || company != null))
                 {
                     ValidCredentials = true;
                     AccountType = account.AccountType;
-                   
                 }
                 else
                 {
@@ -31,6 +38,21 @@ namespace Validation
                 }
 
             }
+        }
+
+    }
+
+    public class Crypt
+    {
+        public static string CryptPassword(string password)
+        {
+            string passwordHash = CRIPT.BCrypt.HashPassword(password);
+            return passwordHash;
+        }
+        public static bool VerifyPassword(string userpassword, string databasepassword)
+        {
+            bool isValid = CRIPT.BCrypt.Verify(userpassword, databasepassword);
+            return isValid;
         }
 
     }

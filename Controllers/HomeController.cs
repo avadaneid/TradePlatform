@@ -56,14 +56,27 @@ namespace TradingPlatform.Controllers
 
         public ActionResult SignUp()
         {
+            if (TempData["UserExists"] != null)
+            {
+                ModelState.AddModelError("UserExists", TempData["UserExists"].ToString());
+            }
             return View();
         }    
 
         [HttpPost]
         public ActionResult InsertUser(Account sign)
-        {          
-            Context.InsertLogIn(sign);
-            return RedirectToAction("LogIn"); 
+        {
+            if (Context.VerifyUserName(sign))
+            {
+                Context.InsertLogIn(sign);
+                return RedirectToAction("LogIn");
+            }
+            else
+            {
+                TempData["UserExists"] = "Username already exists! Choose another username !";
+                return RedirectToAction("SignUp");
+            }
+           
         }
 
 

@@ -138,5 +138,12 @@ namespace TradingPlatform.Controllers
 
             return Json(port.ToArray(), JsonRequestBehavior.AllowGet);           
         }
+
+        [HttpGet]
+        public decimal PortofolioValue(long cnp)
+        {
+           decimal portVal = Context.PortofolioValue(cnp);
+           return portVal;
+        }
     }
 }

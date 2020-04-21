@@ -23,7 +23,7 @@ namespace Models
 
         [NotMapped]
         [Required(ErrorMessage = "Confirmation Password is Required")]
-        [Compare("Password", ErrorMessage = "Password Must Match")]
+        //[Compare("Password", ErrorMessage = "Password Must Match")]
         public string ConfirmPassword { get; set; } 
 
         [Required]

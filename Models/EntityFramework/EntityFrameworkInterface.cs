@@ -61,10 +61,14 @@ namespace EntityFramework
             {
                 using (Connect connect = new Connect())
                 {
+
+
                     using (var transaction = connect.Database.BeginTransaction())
                     {
                         account.CreatedOn = DateTime.Now;
                         account.Id = Guid.NewGuid();
+
+                        account.Password = Crypt.CryptPassword(account.Password);
 
                         connect.Accounts.Add(account);
 
@@ -91,6 +95,22 @@ namespace EntityFramework
                     }
                 }
                 MessageBox.Show(s);
+            }
+        }
+
+        public static bool VerifyUserName(Account ac)
+        {
+            using (Connect c = new Connect())
+            {
+                Account account = c.Accounts.Where(k => k.UserName == ac.UserName).FirstOrDefault();
+                if(account != null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
             }
         }
 
@@ -779,9 +799,6 @@ namespace EntityFramework
             return lst;
         }
 
-
-
-
         public static void UpdateBID(Term term)
         {
             using(Connect c = new Connect())
@@ -910,6 +927,29 @@ namespace EntityFramework
                 return true;
             }
 
+        }
+
+        public static decimal PortofolioValue(long cnp)
+        {
+            decimal value = 0;
+            using (Connect c = new Connect())
+            {
+                List<Portofolio> p = c.Portofolios.Where(po => po.CNP == cnp).ToList();
+                List<Company> comp = c.Companies.DistinctBy(l => l.CUI).ToList();
+
+                foreach(Portofolio po in p)
+                {
+                    foreach(Company com in comp)
+                    {
+                        if (po.CUI == com.CUI)
+                        {
+                            value += po.Quantity * com.MarketSharePrice;
+                        }
+                    }
+                }
+
+            }
+            return value;
         }
 
     }
