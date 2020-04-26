@@ -7,6 +7,7 @@
 
 @{
     var ListedCompanies = ViewBag.ListedCompanies as IEnumerable<Company>;
+    var TranHistory = ViewBag.TransactionHistory as IEnumerable<Transactions>;
 }
 
 @model Models.Individual
@@ -35,6 +36,16 @@
 
     <script>
         $(document).ready(function () {
+
+              $('#verticalScroll').DataTable({
+                    "scrollY": "50vh",
+                    "scrollCollapse": true,
+              });
+              $('#verticalScroll_2').DataTable({
+                    "scrollY": "50vh",
+                    "scrollCollapse": true,
+              });
+              $('.dataTables_length').addClass('bs-select');
 
             $.get('@Url.Action("PortofolioValue", "User", new { cnp = pin })', function (response) {
 
@@ -97,7 +108,7 @@
     <div class="divpad">
 
         <div>
-           
+
 
             <div class="row" style="padding-bottom:10%">
 
@@ -145,7 +156,6 @@
                                     </td>
 
                                     <td id="valport">
-
                                     </td>
                                 </tr>
                             </tbody>
@@ -159,11 +169,11 @@
 
             </div>
 
-            
+
         </div>
 
 
-     
+
 
         <div style="width:100% ;padding-right:30%; float :left">
             <table id="verticalScroll" class="table table-striped table-bordered table-sm" cellspacing="0">
@@ -209,7 +219,7 @@
 
                                 <button type="button" value="Details" class="btn btn-primary"
                                         onclick="location.href='@Url.Action("CompanyDetails","User", new Transaction {CNP = Individual.CNP,CUI = o.CUI })'">
-                                    Details
+                                    Vizualizare Companie
                                 </button>
 
                             </td>
@@ -230,6 +240,73 @@
         <div style="padding-right:80%">SELL</div>
         <div style="float:left" class="form-inline">
             @Html.Action("PartialViewASK", "User", new { cnp = pin })
+        </div>
+
+
+        <div style="padding-top:10%;padding-right:80%">
+                <h4>
+                    Istoric Tranzactii
+                </h4>
+        </div>
+
+        <div style="width:100% ;padding-right:30%; float :left">
+            <table id="verticalScroll_2" class="table table-striped table-bordered table-sm" cellspacing="0">
+                <thead class="thead-light">
+                    <tr>
+                        <th>
+                            Tip Tranzactie
+                        </th>
+                        <th>
+                            Data Tranzactie
+                        </th>
+                        <th>
+                            Companie
+                        </th>
+                        <th>
+                            Cantitate
+                        </th>
+                        <th>
+                            Pret
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (Transactions o in TranHistory)
+                    {
+                        <tr>
+                            <td>
+                               @{ 
+                                   string x;
+
+                                   if (o.BuyFrom == pin)
+                                   {
+                                       x = "Vanzare";
+                                   }
+                                   else
+                                   {
+                                       x = "Cumparare";
+                                   }
+                               }
+                                @x
+                            </td>
+                            <td>
+                                @o.CreatedOn
+                            </td>
+                            <td>
+                                @o.CompanyName
+                            </td>
+                            <td>
+                                @o.Quantity
+                            </td>
+                            <td>
+                                @o.Price
+                            </td>
+                        </tr>
+                     }
+
+                </tbody>
+            </table>
         </div>
 
     </div>

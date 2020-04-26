@@ -4,7 +4,6 @@ using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Windows.Forms;
 using Models;
-using EntityFramework;
 using System.Linq;
 using System.Data.Entity.Core.Mapping;
 using Microsoft.Ajax.Utilities;
@@ -799,6 +798,7 @@ namespace EntityFramework
             return lst;
         }
 
+
         public static void UpdateBID(Term term)
         {
             using(Connect c = new Connect())
@@ -950,6 +950,18 @@ namespace EntityFramework
 
             }
             return value;
+        }
+
+        public static List<Transactions> FindTransactionHistory(string username)
+        {
+            Individual ind = FindIndividual(username);
+            List<Transactions> lst;
+
+            using (Connect c = new Connect())
+            {
+                lst = c.Transactions.Where(t => t.BuyFrom == ind.CNP || t.SellTo == ind.CNP).OrderByDescending(cr => cr.CreatedOn).ToList();
+            }
+            return lst;
         }
 
     }

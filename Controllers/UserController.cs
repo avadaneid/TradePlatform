@@ -35,8 +35,9 @@ namespace TradingPlatform.Controllers
 
         public ActionResult SesionIndividual(LogInModel lm)
         {
-            IEnumerable<Company> comp = Context.FindListedCompanies();
-            ViewBag.ListedCompanies = comp;          
+            
+            ViewBag.ListedCompanies = Context.FindListedCompanies();
+            ViewBag.TransactionHistory = Context.FindTransactionHistory(lm.UserName);
 
             if (lm.UserName != null)
             {

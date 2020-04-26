@@ -7,12 +7,7 @@ using Models;
 
 namespace Validation
 {
-    public class Outcome
-    {
-        public bool IsSucces { get; set; }
-        public string ErrorMessage { get; set; }
-    }
-
+  
     public class TransactionValidation
     {
         public static void Order(Transaction t)
