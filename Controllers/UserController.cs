@@ -33,6 +33,7 @@ namespace TradingPlatform.Controllers
             return View();
         }
 
+    
         public ActionResult SesionIndividual(LogInModel lm)
         {
             

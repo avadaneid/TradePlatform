@@ -7,6 +7,7 @@ using Models;
 using EntityFramework;
 using Validation;
 using System.Web.Security;
+using System.Windows.Forms;
 
 namespace TradingPlatform.Controllers
 {
@@ -79,6 +80,11 @@ namespace TradingPlatform.Controllers
            
         }
 
+        public ActionResult LogOut()
+        {
+            Session.Abandon();
+            return RedirectToAction("LogIn","Home",null);
+        }
 
 
     }

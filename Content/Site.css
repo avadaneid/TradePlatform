@@ -1,7 +1,4 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
-}
+﻿
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
@@ -25,5 +22,10 @@ textarea {
 .divpad {
     padding-right:20%;
     padding-left:25%;
+}
+
+.divpadC {
+    padding-right: 21.5%;
+    padding-left: 20%;
 }
 
