@@ -42,11 +42,6 @@
               });
               $('.dataTables_length').addClass('bs-select');
 
-            @*$("#logout").click(function () {
-                console.log("aici")
-                $.ajax({url:'@Url.Action("LogOut","Home")'});
-             });*@
-
             $.get('@Url.Action("PortofolioValue", "User", new { cnp = pin })', function (response) {
 
                 document.getElementById('valport').innerHTML = response;
@@ -224,7 +219,7 @@
 
                                     <button type="button" value="Details" class="btn btn-primary"
                                             onclick="location.href='@Url.Action("CompanyDetails","User", new Transaction {CNP = Individual.CNP,CUI = o.CUI })'">
-                                        Vizualizare Companie
+                                        Detalii
                                     </button>
 
                                 </td>

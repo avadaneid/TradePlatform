@@ -20,13 +20,16 @@
 
             $.get('@Url.Action("GraphData", "User", new { cui = cui })', function (response) {
 
-                console.log(response)
+                console.log("ResponseData: " + response)
 
                 var chartData = [];
+                var displayData;
 
                 for (var i = 0; i < response.length; i++) {
-
+				
                     chartData[i] = {
+                        companyName: response[i].CompanyName,
+
 						date: new Date(parseInt(response[i].Date.substr(6))),
 
 						open: response[i].OpenPrice,
@@ -39,9 +42,25 @@
 						value: response[i].Value
                     }
 
+                    displayData = {
+                        companyName: response[response.length - 1].CompanyName,
+
+						date: new Date(parseInt(response[response.length - 1].Date.substr(6))),
+
+						open: response[response.length - 1].OpenPrice,
+						close: response[response.length - 1].ClosingPrice,
+
+						high: response[response.length - 1].High,
+						low: response[response.length - 1].Low,
+						
+						volume: response[response.length - 1].Volume,
+						value: response[response.length - 1].Value
+                    }
+
                 }
 
-                console.log(chartData)
+
+                console.log(displayData)
 
 
 					AmCharts.makeChart("chartdiv", {
@@ -201,7 +220,104 @@
 
 
 
-<body style="background-color:#FFFFFF">
+<body >
+	<div>
+
+		<div class="container table-bordered">
+			<div class="row">
+				<div class="col-sm-3 border">
+					<div>
+						<table class="table">
+							<tbody>
+								<tr>
+									<td>
+										NumeCompanie:
+									</td>
+									<td id="NumeCompanie">
+										
+									</td>
+								</tr>
+								<tr>
+									<td>
+										Simbol:
+									</td>
+									<td>
+										
+									</td>
+								</tr>
+								<tr>
+									<td>
+										Segment:
+									</td>
+									<td>
+										Principal
+									</td>
+								</tr>
+								<tr>
+									<td>
+										Numar Actiuni:
+									</td>
+									<td>
+									
+									</td>
+								</tr>
+								<tr>
+									<td>
+										Stare:
+									</td>
+									<td id="State">
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+
+				<div class="col-sm-3 border">
+					<div>
+						<table class="table">
+							<tbody>
+								<tr>
+									<td>
+										Nume Companie:
+									</td>
+									<td>
+									
+									</td>
+								</tr>
+								<tr>
+									<td>
+										Pret Nominal Actiune:
+									</td>
+									<td>
+									
+									</td>
+								</tr>
+								<tr>
+									<td>
+										Pret in piata Actiune:
+									</td>
+									<td>
+									
+									</td>
+								</tr>
+								<tr>
+									<td style="padding-left:15%">
+										@DateTime.Now
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<div class="col-sm-3 border">c</div>
+				<div class="col-sm-3 border">d</div>
+			</div>
+		</div>
+
+	</div>
 	<div id="chartdiv" style="width:100%; height:600px;"></div>
 </body>
 

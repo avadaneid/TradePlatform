@@ -792,7 +792,8 @@ namespace EntityFramework
 
             using (Connect c = new Connect())
             {
-                lst = c.TransactionReports.Where(co => co.CompanyIdentifier == cui).ToList();
+                lst = c.TransactionReports.Where(co => co.CompanyIdentifier == cui).
+                    OrderBy(b => b.CompanyName).OrderBy(l => l.Date).ToList();
             }
 
             return lst;
