@@ -30,6 +30,7 @@
     <script src="~/Scripts/amcharts/amcharts.js" type="text/javascript"></script>
     <script src="~/Scripts/amcharts/serial.js" type="text/javascript"></script>
     <script src="~/Scripts/amcharts/amstock.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery-dateFormat.js" type="text/javascript"></script>
 
     <script>
         $(document).ready(function () {
@@ -38,7 +39,13 @@
                     "scrollY": "50vh",
                     "scrollCollapse": true,
                 });
+
                 $('.dataTables_length').addClass('bs-select');
+
+               $('#verticalScroll_2').DataTable({
+                    "scrollY": "50vh",
+                    "scrollCollapse": true,
+               });
 
                 var cl = @(company.IsListed?"true":"false")
 
@@ -51,17 +58,17 @@
 
                  $.get('@Url.Action("GraphData", "User", new { cui = company.CUI })', function (response) {
 
-                     var date = [];
-                     var value = [];
+                         var date = [];
+                         var value = [];
 
                         for (var i = 0; i < response.length; i++) {
 
-						        date.push(new Date(parseInt(response[i].Date.substr(6))))
-						       
-						        value.push(response[i].ClosingPrice)                      
+                            date.push($.format.date(new Date(parseInt(response[i].Date.substr(6))), "dd/MM/yyyy"));
 
+                            value.push(response[i].ClosingPrice);
                         }
 
+                        console.log(date)
 
                         var ctxL = document.getElementById("lineChart").getContext('2d');
                         var myLineChart = new Chart(ctxL, {

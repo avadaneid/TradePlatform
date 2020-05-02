@@ -8,6 +8,11 @@ using System.Linq;
 using System.Data.Entity.Core.Mapping;
 using Microsoft.Ajax.Utilities;
 using Validation;
+using EXL = Microsoft.Office.Interop.Excel;
+using Microsoft.Office.Interop.Excel;
+using System.IO;
+using System.Web.Mvc;
+using System.Web;
 
 namespace EntityFramework
 {
@@ -799,7 +804,6 @@ namespace EntityFramework
             return lst;
         }
 
-
         public static void UpdateBID(Term term)
         {
             using(Connect c = new Connect())
@@ -964,6 +968,17 @@ namespace EntityFramework
             }
             return lst;
         }
+
+        public static List<Transactions> FindTransactionHistoryForCompany(long cui)
+        {
+            List<Transactions> lst;
+
+            using (Connect c = new Connect())
+            {
+                lst = c.Transactions.Where(t => t.CompanyIdentifier == cui).OrderByDescending(cr => cr.CreatedOn).ToList();
+            }
+            return lst;
+        }      
 
     }
 }

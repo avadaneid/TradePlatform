@@ -10,6 +10,8 @@ using FileProcessing;
 using EntityFramework;
 using Newtonsoft.Json;
 using Validation;
+using Microsoft.Office.Interop.Excel;
+using EXL = Microsoft.Office.Interop.Excel;
 
 namespace TradingPlatform.Controllers
 {
@@ -19,6 +21,9 @@ namespace TradingPlatform.Controllers
     {    
         public static string username { get; set; }
         public static string password { get; set; }
+        public static long Cui { get; set; }
+
+
         public LogInModel LogInModel { get; set; }
         public ActionResult SesionCompany(LogInModel lm)
         {
@@ -76,9 +81,12 @@ namespace TradingPlatform.Controllers
         public ActionResult CompanyDetails(Transaction t)
         {    
             Company company = Context.FindCompany(t.CUI);
+            Cui = t.CUI;
             ViewBag.ASK = Context.FindASKforListing(t.CUI);
             ViewBag.BID = Context.FindBIDforListing(t.CUI);
             ViewBag.Transaction = t;
+            ViewBag.TransactionHistory = Context.FindTransactionHistoryForCompany(t.CUI);
+
             return View();
         }
       
@@ -148,5 +156,44 @@ namespace TradingPlatform.Controllers
            decimal portVal = Context.PortofolioValue(cnp);
            return portVal;
         }
+        
+        public ActionResult DownloadExcel()
+        {
+            List<Transactions> lst = Context.FindTransactionHistoryForCompany(Cui);
+            EXL.Application excelApp = new EXL.Application();
+            Workbook xlWorkBook = excelApp.Workbooks.Add();
+            Worksheet xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
+            xlWorkSheet.Cells[1, 1] = "DataTranzactie";
+            xlWorkSheet.Cells[1, 2] = "Cantitate";
+            xlWorkSheet.Cells[1, 3] = "Pret";
+
+            if (lst != null)
+            {
+                for (var i = 0; i < lst.Count; i++)
+                {
+                    xlWorkSheet.Cells[i + 2, 1] = lst[i].CreatedOn;
+                    xlWorkSheet.Cells[i + 2, 2] = lst[i].Quantity;
+                    xlWorkSheet.Cells[i + 2, 3] = lst[i].Price;
+
+                }
+            }
+            Guid g = Guid.NewGuid();
+
+            var fileName = $"IstoricTranzactii_{lst[0].CompanyName}_{g}.xlsx";
+
+            var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), fileName);
+            xlWorkBook.SaveAs(path);
+
+            xlWorkBook.Close();
+            excelApp.Quit();
+
+            string _filePath = String.Format($"{HttpRuntime.AppDomainAppPath}App_Data\\uploads\\{fileName}").Replace(@"\\", @"\");
+            byte[] fileBytes = System.IO.File.ReadAllBytes($"{_filePath}");
+
+            System.IO.File.Delete(_filePath);
+
+            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+        }  
+
     }
 }
