@@ -214,6 +214,18 @@ namespace EntityFramework
             return co;
         }
 
+        public static CompanyFinancialIndicators FindCompanyFinancialDetails(long cui)
+        {           
+            CompanyFinancialIndicators q;
+
+            using (Connect a = new Connect())
+            {
+                q = a.CompanyFinancialIndicators.Where(P => P.Cui == cui).FirstOrDefault();
+            }
+
+            return q;
+        }
+
         public static Company UpdateCompanyBeginTransactionDate(long cui,DateTime dt)
         {
             Company co;

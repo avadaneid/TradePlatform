@@ -4,7 +4,7 @@
 @{
     long cui = ViewBag.Cui;
 	var Company = EntityFramework.Context.FindCompany(cui);
-
+	var cfd = EntityFramework.Context.FindCompanyFinancialDetails(cui);
 }
 
 <html>
@@ -67,6 +67,10 @@
                 $("#Low").html(displayData.low);
                 $("#Open").html(displayData.open);
                 $("#Close").html(displayData.close);
+                $("#PER").html(@cfd.PriceEarningsRatio);
+                $("#CAP").html(@cfd.Capitalisation);
+                $("#PBV").html(@cfd.PriceBookValue);
+                $("#EPS").html(@cfd.EarningPerShare);
           
 				AmCharts.makeChart("chartdiv", {
 			type: "stock",
@@ -227,7 +231,7 @@
 		<div class="container table-bordered">
 			<div class="row">
 
-				<div class="col-sm-4 border">
+				<div class="col-sm-3 border">
 					<div>
 						<table class="table">
 							<tbody>
@@ -268,7 +272,7 @@
 					</div>
 				</div>
 
-				<div class="col-sm-4 border">
+				<div class="col-sm-3 border">
 					<div>
 						<table class="table">
 							<tbody>
@@ -306,7 +310,7 @@
 					</div>
 				</div>
 
-				<div class="col-sm-4 border">
+				<div class="col-sm-3 border">
 					<div>
 						<table class="table">
 							<tbody>
@@ -314,7 +318,7 @@
 									<td>
 										High
 									</td>
-									<td id="High">										
+									<td id="High">
 									</td>
 								</tr>
 								<tr>
@@ -343,6 +347,48 @@
 						</table>
 					</div>
 				</div>
+
+
+
+				<div class="col-sm-3 border">
+					<div>
+						<table class="table">
+							<tbody>
+								<tr>
+									<td>
+										PER
+									</td>
+									<td id="PER">
+									</td>
+								</tr>
+								<tr>
+									<td>
+										Capitalisation
+									</td>
+									<td id="CAP">
+									</td>
+								</tr>
+								<tr>
+									<td>
+										P/BV:
+									</td>
+									<td id="PBV">
+									</td>
+								</tr>
+								<tr>
+									<td>
+										E/PS:
+									</td>
+									<td id="EPS">
+									</td>
+								</tr>
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+
 
 			</div>
 		</div>
