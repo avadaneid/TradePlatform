@@ -32,9 +32,12 @@ namespace TradingPlatform.Controllers
 
             IEnumerable<CompanyFinancialDetails> co = Context.FindCompanyFinancialDetails(username);
             Company company = Context.FindCompany(lm.UserName);
+            CompanyFinancialIndicators cfi = Context.FindCompanyFinancialIndicators(company.CUI);
 
             ViewBag.CFD_List = co;
             ViewBag.Company = company;
+            ViewBag.CFI_List = cfi;
+
             return View();
         }
 

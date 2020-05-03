@@ -144,15 +144,22 @@ namespace EntityFramework
                 case AccountType.Company:
 
                     connect.Companies.Add(new Company
-                    {   
+                    {
                         UserName = account.UserName,
                         CUI = account.CUI,
                         CompanyName = account.CompanyName,
-                        Account  = account
+                        Account = account,
+                        Simbol = SetSimbol(account.CompanyName)
                     });
 
                 break;
             }
+        }
+
+        public static string SetSimbol(string cn)
+        {
+            string companyName = cn.Substring(0, 3).ToUpper();
+            return companyName;
         }
 
         public static void InsertDetails(IEnumerable<CompanyFinancialDetails> c,string username)
@@ -224,6 +231,16 @@ namespace EntityFramework
             }
 
             return q;
+        }
+
+        public static CompanyFinancialIndicators FindCompanyFinancialIndicators(long cui)
+        {
+            CompanyFinancialIndicators cfi;
+            using (Connect cn = new Connect())
+            {
+               cfi =  cn.CompanyFinancialIndicators.Where(c => c.Cui == cui).FirstOrDefault();
+            }
+            return cfi;
         }
 
         public static Company UpdateCompanyBeginTransactionDate(long cui,DateTime dt)
@@ -463,7 +480,7 @@ namespace EntityFramework
                 }
                 else if(ask_p.Quantity == bid_p.Quantity)
                 {
-                    c.Debit += bid_p.Price * bid_p.Quantity;
+                    c.Debit += ask_p.Price * bid_p.Quantity;
                     c.SharesOnInitialIPO -= bid_p.Quantity;
                     cnt.Ask.Remove(ask);
                     cnt.Bid.Remove(bid);
