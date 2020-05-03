@@ -532,6 +532,7 @@ namespace EntityFramework
                 cnt.SaveChanges();
 
                 UpdateFinancialIndicators(ask_p.CUI);
+                VerifyAndDeleteEmptyPortfolio();
             }
 
         }
@@ -632,6 +633,7 @@ namespace EntityFramework
                 cnt.SaveChanges();
 
                 UpdateFinancialIndicators(ask_p.CUI);
+                VerifyAndDeleteEmptyPortfolio();
             }
         }
 
