@@ -48,17 +48,18 @@
 
             $.get('@Url.Action("PortofolioGraph", "User", new { cnp = pin })', function (response) {
 
-
+               
                 var labels = [];
                 var data = [];
-                var countActiuni = 0;
+                var countCompanii = 0;
                 var predShare = '';
                 var totalShares = 0;
 
                 for (var i = 0; i < response.length; i++) {
+                
                     labels.push(response[i].CompanyName);
                     data.push(response[i].Quantity);
-                    countActiuni++;
+                    countCompanii++;
                     predShare = response[0].CompanyName;
                     maxquant = response[0].Quantity;
                     totalShares += response[i].Quantity;
@@ -70,7 +71,7 @@
                    
                 }
 
-                document.getElementById('numarActiuni').innerHTML = countActiuni;
+                document.getElementById('numarCompanii').innerHTML = countCompanii;
                 document.getElementById('actmaj').innerHTML = predShare;
                 document.getElementById('totalShares').innerHTML = totalShares;
 
@@ -136,7 +137,7 @@
                                         <td>
                                             Numar Companii:
                                         </td>
-                                        <td id="numarActiuni">
+                                        <td id="numarCompanii">
                                         </td>
                                     </tr>
                                     <tr>

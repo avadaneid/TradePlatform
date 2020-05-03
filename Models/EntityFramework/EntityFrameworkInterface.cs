@@ -133,7 +133,8 @@ namespace EntityFramework
                                 PhoneNumber = account.PhoneNumber,
                                 Address = account.Address,
                                 UserName = account.UserName,
-                                Account = account
+                                Account = account,
+                                Debit = 60000
                             }
 
                      );
@@ -658,6 +659,7 @@ namespace EntityFramework
                 {
 
                     portf.Quantity += k.Quantity;
+                    portf.CompanyName = k.CompanyName;
 
                 }
 

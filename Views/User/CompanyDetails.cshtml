@@ -9,17 +9,10 @@
     var BID = ViewBag.BID as IEnumerable<Models.BID>;
     var Transaction = ViewBag.Transaction as Transaction;
     var TranHistory = ViewBag.TransactionHistory as List<Transactions>;
-
+    string CompanyName = ViewBag.CompanyName;
     var CUI = Transaction.CUI;
-    string CompanyName;
-    if (ASK.Count > 0)
-    {
-        CompanyName = ASK[0].CompanyName;
-    }
-    else
-    {
-        CompanyName = "null";
-    }
+    
+
 }
 
 

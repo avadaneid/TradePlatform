@@ -89,6 +89,7 @@ namespace TradingPlatform.Controllers
             ViewBag.BID = Context.FindBIDforListing(t.CUI);
             ViewBag.Transaction = t;
             ViewBag.TransactionHistory = Context.FindTransactionHistoryForCompany(t.CUI);
+            ViewBag.CompanyName = company.CompanyName;
 
             return View();
         }
