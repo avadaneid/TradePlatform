@@ -10,6 +10,7 @@ namespace Models
         public Guid Id { get; set; }
         public string CompanyName { get; set; }
         public long CNP { get; set; }
+        public string Email { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public long PhoneNumber { get; set; }
