@@ -23,15 +23,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css" />
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.21/sorting/datetime-moment.js"></script>
+
     <link rel="stylesheet" href="~/Scripts/amcharts/style.css" type="text/css">
     <script src="~/Scripts/amcharts/amcharts.js" type="text/javascript"></script>
     <script src="~/Scripts/amcharts/serial.js" type="text/javascript"></script>
     <script src="~/Scripts/amcharts/amstock.js" type="text/javascript"></script>
     <script src="~/Scripts/jquery-dateFormat.js" type="text/javascript"></script>
 
+
     <script>
         $(document).ready(function () {
 
+                $.fn.dataTable.moment( 'HH:mm MMM D, YY' );
                 $('#verticalScroll').DataTable({
                     "scrollY": "50vh",
                     "scrollCollapse": true,
@@ -44,7 +50,7 @@
                     "scrollCollapse": true,
                });
 
-                var cl = @(company.IsListed?"true":"false")
+                var cl = @(company.IsListed ? "true" : "false")
 
                 if(cl == true) {
                     $('#CompanyListing').hide()
@@ -94,7 +100,7 @@
     </script>
 
     <div>
-        <input type="button" value="LogOut" class="btn btn-primary active" onclick="location.href='@Url.Action("LogOut","Home")'" />
+        <input type="button" value="LogOut" class="btn btn-primary active" onclick="location.href='@Url.Action("LogOut", "Home")'" />
     </div>
 
     <div class="container table-bordered">
@@ -134,7 +140,7 @@
                                 <td>
                                     Principal
                                 </td>
-                            </tr>                  
+                            </tr>
                             <tr>
                                 <td>
                                     Stare:
@@ -189,7 +195,13 @@
                                     Capitalizare:
                                 </td>
                                 <td>
-                                    @cfi.Capitalisation
+                                   
+                                    @{
+                                        var cap = cfi?.Capitalisation ?? 0;
+                                        @cap;
+
+                                    }
+                                       
                                 </td>
                             </tr>
                         </tbody>

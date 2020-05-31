@@ -13,6 +13,7 @@ using Microsoft.Office.Interop.Excel;
 using System.IO;
 using System.Web.Mvc;
 using System.Web;
+using static Validation.TransactionValidation;
 
 namespace EntityFramework
 {
@@ -837,8 +838,9 @@ namespace EntityFramework
             return lst;
         }
 
-        public static void UpdateBID(Term term)
+        public static string UpdateBID(Term term)
         {
+            string result = "";
             using(Connect c = new Connect())
             {
 
@@ -854,7 +856,8 @@ namespace EntityFramework
                     if (uo.quantity == 0 || uo.price == 0)
                     {
                         c.Bid.Remove(b);
-                        c.SaveChanges();                     
+                        c.SaveChanges();
+                        result = SuccesMessage.TransactionDeleteSucces;
                     }
                     else
                     {
@@ -863,12 +866,18 @@ namespace EntityFramework
                             b.Price = uo.price;
                             b.Quantity = uo.quantity;
                             c.SaveChanges();
+                            result = SuccesMessage.TransactionSucces;
+                        }
+                        else
+                        {
+                            result = ErrorMessage.InsufficientFunds;
                         }
                                           
                     }
                     TransactionValidation.Order(new Transaction { CUI = b.CUI });
                }
             }
+            return Alert(result);
         }
 
         public static bool CheckUserDebitOrder(Transaction t, UpdateOrder UpdateOrder)
@@ -898,8 +907,9 @@ namespace EntityFramework
 
         }
 
-        public static void UpdateASK(Term term)
+        public static string UpdateASK(Term term)
         {
+            string result = "";
             using (Connect c = new Connect())
             {
 
@@ -916,6 +926,7 @@ namespace EntityFramework
                     {
                         c.Ask.Remove(ask);
                         c.SaveChanges();
+                        result = SuccesMessage.TransactionDeleteSucces;
                     }
                     else
                     {
@@ -924,12 +935,19 @@ namespace EntityFramework
                             ask.Price = uo.price;
                             ask.Quantity = uo.quantity;
                             c.SaveChanges();
+                            result = SuccesMessage.TransactionSucces;
+                        }
+                        else
+                        {
+                            result = ErrorMessage.InsufficientShares;
                         }
 
                     }
                     TransactionValidation.Order(new Transaction { CUI = ask.CUI });
                 }
             }
+
+            return Alert(result);
         }
 
         public static bool CheckCountASKPortfolio(UpdateOrder term,Transaction t)

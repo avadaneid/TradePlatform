@@ -47,10 +47,18 @@
                        cache: false,
                        async: true,
                        dataType: "json",
-                       success: function (data) {
-                       alert(data);
-                      
+                       success: function (response) {
+
+                           alert(response.Message)
+                           location.reload(true);
                        },
+                       error: function(jqXhr, textStatus, errorMessage){
+                        
+                            console.log(jqXhr)
+                            console.log(textStatus)
+                            console.log(errorMessage)
+                            window.stop()
+                       }
 
                   });             
 

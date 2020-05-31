@@ -82,7 +82,8 @@ namespace TradingPlatform.Controllers
         }
   
         public ActionResult CompanyDetails(Transaction t)
-        {    
+        {
+          
             Company company = Context.FindCompany(t.CUI);
             Cui = t.CUI;
             ViewBag.ASK = Context.FindASKforListing(t.CUI);
@@ -94,29 +95,28 @@ namespace TradingPlatform.Controllers
             return View();
         }
       
-        [HttpPost]
-        public void BUY(Transaction t)
+        
+        public string BUY(Transaction t)
         {
-            TransactionValidation.ValidateBUY(t);          
+             return TransactionValidation.ValidateBUY(t);       
         }
 
-        [HttpPost]
-        public void SELL(Transaction t)
+        
+        public string SELL(Transaction t)
         {
-            TransactionValidation.ValidateSELL(t);         
+             return TransactionValidation.ValidateSELL(t);         
         }
 
-        public ActionResult UpdateBID(Term Term)
+        public string UpdateBID(Term Term)
         {        
-            Context.UpdateBID(Term);
-            return RedirectToAction("SesionIndividual", TempData["LoginModel"]);
+            return Context.UpdateBID(Term);           
         }
 
 
-        public ActionResult UpdateASK(Term Term)
+        public string UpdateASK(Term Term)
         {
-            Context.UpdateASK(Term);          
-            return RedirectToAction("SesionIndividual", TempData["LoginModel"]);
+            return Context.UpdateASK(Term);          
+           
         }
 
         public PartialViewResult RenderGraph(long cui)
@@ -199,5 +199,6 @@ namespace TradingPlatform.Controllers
             return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
         }  
 
+     
     }
 }

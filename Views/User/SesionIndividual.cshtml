@@ -42,9 +42,7 @@
 
                 document.getElementById('valport').innerHTML = response;
 
-            });
-
-           
+            });         
 
             $.get('@Url.Action("PortofolioGraph", "User", new { cnp = pin })', function (response) {
 
